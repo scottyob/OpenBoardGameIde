@@ -1,0 +1,39 @@
+{
+  "name": "boardgame_ide",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@material-ui/core": "^1.5.1",
+    "@material-ui/icons": "^2.0.0",
+    "core-js": "^2.5.7",
+    "google-closure-compiler": "^20180716.0.1",
+    "google-protobuf": "^3.6.1",
+    "js-file-download": "^0.4.1",
+    "material-ui-tree": "^1.0.11",
+    "mdi-material-ui": "^5.2.0",
+    "pbjs": "0.0.5",
+    "prop-types": "^15.6.2",
+    "protobufjs": "^6.8.8",
+    "rc-tooltip": "^3.7.2",
+    "rc-tree": "^1.12.7",
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2",
+    "react-files": "^2.4.6",
+    "react-reflex": "^2.2.8",
+    "react-scripts": "1.1.4",
+    "react-split-pane": "^0.1.82",
+    "react-splitter-layout": "^3.0.1",
+    "three": "^0.95.0",
+    "uniforms-material": "^1.25.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "react-redux": "^5.0.7",
+    "redux": "^4.0.0"
+  }
+}
