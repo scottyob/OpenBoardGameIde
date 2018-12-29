@@ -62,8 +62,8 @@ const rootReducer = (state = initialState, action) => {
       under.push(new GameComponent({
         uuid: Math.generateUUID(),
         displayName: "New Card",
-        width: 64, // Standard playing card
-        height: 89, // Standard playing card,
+        width: 0.0064, // Standard playing card
+        height: 0.0089, // Standard playing card,
         backUrl: "https://cdn3.iconfinder.com/data/icons/gray-toolbar-4/512/question-512.png",
         frontUrl: "https://cdn3.iconfinder.com/data/icons/gray-toolbar-4/512/question-512.png",
       }));
