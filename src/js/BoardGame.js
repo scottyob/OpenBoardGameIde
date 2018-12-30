@@ -17,16 +17,18 @@ $root.GameComponent = (function() {
      * @interface IGameComponent
      * @property {string|null} [uuid] GameComponent uuid
      * @property {GameComponent.ComponentType|null} [componentType] GameComponent componentType
-     * @property {number|Long|null} [xPos] GameComponent xPos
-     * @property {number|Long|null} [yPos] GameComponent yPos
+     * @property {number|null} [xPos] GameComponent xPos
+     * @property {number|null} [yPos] GameComponent yPos
      * @property {number|Long|null} [rotation] GameComponent rotation
-     * @property {number|Long|null} [width] GameComponent width
-     * @property {number|Long|null} [height] GameComponent height
+     * @property {number|null} [width] GameComponent width
+     * @property {number|null} [height] GameComponent height
      * @property {string|null} [frontUrl] GameComponent frontUrl
      * @property {string|null} [backUrl] GameComponent backUrl
      * @property {string|null} [displayName] GameComponent displayName
      * @property {string|null} [stackableIdentifier] GameComponent stackableIdentifier
      * @property {Object.<string,string>|null} [additionalProperties] GameComponent additionalProperties
+     * @property {number|Long|null} [movingPlayer] GameComponent movingPlayer
+     * @property {boolean|null} [faceUp] GameComponent faceUp
      */
 
     /**
@@ -63,19 +65,19 @@ $root.GameComponent = (function() {
 
     /**
      * GameComponent xPos.
-     * @member {number|Long} xPos
+     * @member {number} xPos
      * @memberof GameComponent
      * @instance
      */
-    GameComponent.prototype.xPos = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+    GameComponent.prototype.xPos = 0;
 
     /**
      * GameComponent yPos.
-     * @member {number|Long} yPos
+     * @member {number} yPos
      * @memberof GameComponent
      * @instance
      */
-    GameComponent.prototype.yPos = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+    GameComponent.prototype.yPos = 0;
 
     /**
      * GameComponent rotation.
@@ -87,19 +89,19 @@ $root.GameComponent = (function() {
 
     /**
      * GameComponent width.
-     * @member {number|Long} width
+     * @member {number} width
      * @memberof GameComponent
      * @instance
      */
-    GameComponent.prototype.width = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+    GameComponent.prototype.width = 0;
 
     /**
      * GameComponent height.
-     * @member {number|Long} height
+     * @member {number} height
      * @memberof GameComponent
      * @instance
      */
-    GameComponent.prototype.height = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+    GameComponent.prototype.height = 0;
 
     /**
      * GameComponent frontUrl.
@@ -142,6 +144,22 @@ $root.GameComponent = (function() {
     GameComponent.prototype.additionalProperties = $util.emptyObject;
 
     /**
+     * GameComponent movingPlayer.
+     * @member {number|Long} movingPlayer
+     * @memberof GameComponent
+     * @instance
+     */
+    GameComponent.prototype.movingPlayer = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+    /**
+     * GameComponent faceUp.
+     * @member {boolean} faceUp
+     * @memberof GameComponent
+     * @instance
+     */
+    GameComponent.prototype.faceUp = false;
+
+    /**
      * Creates a new GameComponent instance using the specified properties.
      * @function create
      * @memberof GameComponent
@@ -170,15 +188,15 @@ $root.GameComponent = (function() {
         if (message.componentType != null && message.hasOwnProperty("componentType"))
             writer.uint32(/* id 2, wireType 0 =*/16).int32(message.componentType);
         if (message.xPos != null && message.hasOwnProperty("xPos"))
-            writer.uint32(/* id 3, wireType 0 =*/24).int64(message.xPos);
+            writer.uint32(/* id 3, wireType 5 =*/29).float(message.xPos);
         if (message.yPos != null && message.hasOwnProperty("yPos"))
-            writer.uint32(/* id 4, wireType 0 =*/32).int64(message.yPos);
+            writer.uint32(/* id 4, wireType 5 =*/37).float(message.yPos);
         if (message.rotation != null && message.hasOwnProperty("rotation"))
             writer.uint32(/* id 5, wireType 0 =*/40).int64(message.rotation);
         if (message.width != null && message.hasOwnProperty("width"))
-            writer.uint32(/* id 6, wireType 0 =*/48).int64(message.width);
+            writer.uint32(/* id 6, wireType 5 =*/53).float(message.width);
         if (message.height != null && message.hasOwnProperty("height"))
-            writer.uint32(/* id 7, wireType 0 =*/56).int64(message.height);
+            writer.uint32(/* id 7, wireType 5 =*/61).float(message.height);
         if (message.frontUrl != null && message.hasOwnProperty("frontUrl"))
             writer.uint32(/* id 8, wireType 2 =*/66).string(message.frontUrl);
         if (message.backUrl != null && message.hasOwnProperty("backUrl"))
@@ -190,6 +208,10 @@ $root.GameComponent = (function() {
         if (message.additionalProperties != null && message.hasOwnProperty("additionalProperties"))
             for (var keys = Object.keys(message.additionalProperties), i = 0; i < keys.length; ++i)
                 writer.uint32(/* id 12, wireType 2 =*/98).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]).uint32(/* id 2, wireType 2 =*/18).string(message.additionalProperties[keys[i]]).ldelim();
+        if (message.movingPlayer != null && message.hasOwnProperty("movingPlayer"))
+            writer.uint32(/* id 13, wireType 0 =*/104).int64(message.movingPlayer);
+        if (message.faceUp != null && message.hasOwnProperty("faceUp"))
+            writer.uint32(/* id 14, wireType 0 =*/112).bool(message.faceUp);
         return writer;
     };
 
@@ -231,19 +253,19 @@ $root.GameComponent = (function() {
                 message.componentType = reader.int32();
                 break;
             case 3:
-                message.xPos = reader.int64();
+                message.xPos = reader.float();
                 break;
             case 4:
-                message.yPos = reader.int64();
+                message.yPos = reader.float();
                 break;
             case 5:
                 message.rotation = reader.int64();
                 break;
             case 6:
-                message.width = reader.int64();
+                message.width = reader.float();
                 break;
             case 7:
-                message.height = reader.int64();
+                message.height = reader.float();
                 break;
             case 8:
                 message.frontUrl = reader.string();
@@ -264,6 +286,12 @@ $root.GameComponent = (function() {
                 key = reader.string();
                 reader.pos++;
                 message.additionalProperties[key] = reader.string();
+                break;
+            case 13:
+                message.movingPlayer = reader.int64();
+                break;
+            case 14:
+                message.faceUp = reader.bool();
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -312,20 +340,20 @@ $root.GameComponent = (function() {
                 break;
             }
         if (message.xPos != null && message.hasOwnProperty("xPos"))
-            if (!$util.isInteger(message.xPos) && !(message.xPos && $util.isInteger(message.xPos.low) && $util.isInteger(message.xPos.high)))
-                return "xPos: integer|Long expected";
+            if (typeof message.xPos !== "number")
+                return "xPos: number expected";
         if (message.yPos != null && message.hasOwnProperty("yPos"))
-            if (!$util.isInteger(message.yPos) && !(message.yPos && $util.isInteger(message.yPos.low) && $util.isInteger(message.yPos.high)))
-                return "yPos: integer|Long expected";
+            if (typeof message.yPos !== "number")
+                return "yPos: number expected";
         if (message.rotation != null && message.hasOwnProperty("rotation"))
             if (!$util.isInteger(message.rotation) && !(message.rotation && $util.isInteger(message.rotation.low) && $util.isInteger(message.rotation.high)))
                 return "rotation: integer|Long expected";
         if (message.width != null && message.hasOwnProperty("width"))
-            if (!$util.isInteger(message.width) && !(message.width && $util.isInteger(message.width.low) && $util.isInteger(message.width.high)))
-                return "width: integer|Long expected";
+            if (typeof message.width !== "number")
+                return "width: number expected";
         if (message.height != null && message.hasOwnProperty("height"))
-            if (!$util.isInteger(message.height) && !(message.height && $util.isInteger(message.height.low) && $util.isInteger(message.height.high)))
-                return "height: integer|Long expected";
+            if (typeof message.height !== "number")
+                return "height: number expected";
         if (message.frontUrl != null && message.hasOwnProperty("frontUrl"))
             if (!$util.isString(message.frontUrl))
                 return "frontUrl: string expected";
@@ -346,6 +374,12 @@ $root.GameComponent = (function() {
                 if (!$util.isString(message.additionalProperties[key[i]]))
                     return "additionalProperties: string{k:string} expected";
         }
+        if (message.movingPlayer != null && message.hasOwnProperty("movingPlayer"))
+            if (!$util.isInteger(message.movingPlayer) && !(message.movingPlayer && $util.isInteger(message.movingPlayer.low) && $util.isInteger(message.movingPlayer.high)))
+                return "movingPlayer: integer|Long expected";
+        if (message.faceUp != null && message.hasOwnProperty("faceUp"))
+            if (typeof message.faceUp !== "boolean")
+                return "faceUp: boolean expected";
         return null;
     };
 
@@ -374,23 +408,9 @@ $root.GameComponent = (function() {
             break;
         }
         if (object.xPos != null)
-            if ($util.Long)
-                (message.xPos = $util.Long.fromValue(object.xPos)).unsigned = false;
-            else if (typeof object.xPos === "string")
-                message.xPos = parseInt(object.xPos, 10);
-            else if (typeof object.xPos === "number")
-                message.xPos = object.xPos;
-            else if (typeof object.xPos === "object")
-                message.xPos = new $util.LongBits(object.xPos.low >>> 0, object.xPos.high >>> 0).toNumber();
+            message.xPos = Number(object.xPos);
         if (object.yPos != null)
-            if ($util.Long)
-                (message.yPos = $util.Long.fromValue(object.yPos)).unsigned = false;
-            else if (typeof object.yPos === "string")
-                message.yPos = parseInt(object.yPos, 10);
-            else if (typeof object.yPos === "number")
-                message.yPos = object.yPos;
-            else if (typeof object.yPos === "object")
-                message.yPos = new $util.LongBits(object.yPos.low >>> 0, object.yPos.high >>> 0).toNumber();
+            message.yPos = Number(object.yPos);
         if (object.rotation != null)
             if ($util.Long)
                 (message.rotation = $util.Long.fromValue(object.rotation)).unsigned = false;
@@ -401,23 +421,9 @@ $root.GameComponent = (function() {
             else if (typeof object.rotation === "object")
                 message.rotation = new $util.LongBits(object.rotation.low >>> 0, object.rotation.high >>> 0).toNumber();
         if (object.width != null)
-            if ($util.Long)
-                (message.width = $util.Long.fromValue(object.width)).unsigned = false;
-            else if (typeof object.width === "string")
-                message.width = parseInt(object.width, 10);
-            else if (typeof object.width === "number")
-                message.width = object.width;
-            else if (typeof object.width === "object")
-                message.width = new $util.LongBits(object.width.low >>> 0, object.width.high >>> 0).toNumber();
+            message.width = Number(object.width);
         if (object.height != null)
-            if ($util.Long)
-                (message.height = $util.Long.fromValue(object.height)).unsigned = false;
-            else if (typeof object.height === "string")
-                message.height = parseInt(object.height, 10);
-            else if (typeof object.height === "number")
-                message.height = object.height;
-            else if (typeof object.height === "object")
-                message.height = new $util.LongBits(object.height.low >>> 0, object.height.high >>> 0).toNumber();
+            message.height = Number(object.height);
         if (object.frontUrl != null)
             message.frontUrl = String(object.frontUrl);
         if (object.backUrl != null)
@@ -433,6 +439,17 @@ $root.GameComponent = (function() {
             for (var keys = Object.keys(object.additionalProperties), i = 0; i < keys.length; ++i)
                 message.additionalProperties[keys[i]] = String(object.additionalProperties[keys[i]]);
         }
+        if (object.movingPlayer != null)
+            if ($util.Long)
+                (message.movingPlayer = $util.Long.fromValue(object.movingPlayer)).unsigned = false;
+            else if (typeof object.movingPlayer === "string")
+                message.movingPlayer = parseInt(object.movingPlayer, 10);
+            else if (typeof object.movingPlayer === "number")
+                message.movingPlayer = object.movingPlayer;
+            else if (typeof object.movingPlayer === "object")
+                message.movingPlayer = new $util.LongBits(object.movingPlayer.low >>> 0, object.movingPlayer.high >>> 0).toNumber();
+        if (object.faceUp != null)
+            message.faceUp = Boolean(object.faceUp);
         return message;
     };
 
@@ -454,65 +471,43 @@ $root.GameComponent = (function() {
         if (options.defaults) {
             object.uuid = "";
             object.componentType = options.enums === String ? "DISPLAY_2D" : 0;
-            if ($util.Long) {
-                var long = new $util.Long(0, 0, false);
-                object.xPos = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-            } else
-                object.xPos = options.longs === String ? "0" : 0;
-            if ($util.Long) {
-                var long = new $util.Long(0, 0, false);
-                object.yPos = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-            } else
-                object.yPos = options.longs === String ? "0" : 0;
+            object.xPos = 0;
+            object.yPos = 0;
             if ($util.Long) {
                 var long = new $util.Long(0, 0, false);
                 object.rotation = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
             } else
                 object.rotation = options.longs === String ? "0" : 0;
-            if ($util.Long) {
-                var long = new $util.Long(0, 0, false);
-                object.width = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-            } else
-                object.width = options.longs === String ? "0" : 0;
-            if ($util.Long) {
-                var long = new $util.Long(0, 0, false);
-                object.height = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-            } else
-                object.height = options.longs === String ? "0" : 0;
+            object.width = 0;
+            object.height = 0;
             object.frontUrl = "";
             object.backUrl = "";
             object.displayName = "";
             object.stackableIdentifier = "";
+            if ($util.Long) {
+                var long = new $util.Long(0, 0, false);
+                object.movingPlayer = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+            } else
+                object.movingPlayer = options.longs === String ? "0" : 0;
+            object.faceUp = false;
         }
         if (message.uuid != null && message.hasOwnProperty("uuid"))
             object.uuid = message.uuid;
         if (message.componentType != null && message.hasOwnProperty("componentType"))
             object.componentType = options.enums === String ? $root.GameComponent.ComponentType[message.componentType] : message.componentType;
         if (message.xPos != null && message.hasOwnProperty("xPos"))
-            if (typeof message.xPos === "number")
-                object.xPos = options.longs === String ? String(message.xPos) : message.xPos;
-            else
-                object.xPos = options.longs === String ? $util.Long.prototype.toString.call(message.xPos) : options.longs === Number ? new $util.LongBits(message.xPos.low >>> 0, message.xPos.high >>> 0).toNumber() : message.xPos;
+            object.xPos = options.json && !isFinite(message.xPos) ? String(message.xPos) : message.xPos;
         if (message.yPos != null && message.hasOwnProperty("yPos"))
-            if (typeof message.yPos === "number")
-                object.yPos = options.longs === String ? String(message.yPos) : message.yPos;
-            else
-                object.yPos = options.longs === String ? $util.Long.prototype.toString.call(message.yPos) : options.longs === Number ? new $util.LongBits(message.yPos.low >>> 0, message.yPos.high >>> 0).toNumber() : message.yPos;
+            object.yPos = options.json && !isFinite(message.yPos) ? String(message.yPos) : message.yPos;
         if (message.rotation != null && message.hasOwnProperty("rotation"))
             if (typeof message.rotation === "number")
                 object.rotation = options.longs === String ? String(message.rotation) : message.rotation;
             else
                 object.rotation = options.longs === String ? $util.Long.prototype.toString.call(message.rotation) : options.longs === Number ? new $util.LongBits(message.rotation.low >>> 0, message.rotation.high >>> 0).toNumber() : message.rotation;
         if (message.width != null && message.hasOwnProperty("width"))
-            if (typeof message.width === "number")
-                object.width = options.longs === String ? String(message.width) : message.width;
-            else
-                object.width = options.longs === String ? $util.Long.prototype.toString.call(message.width) : options.longs === Number ? new $util.LongBits(message.width.low >>> 0, message.width.high >>> 0).toNumber() : message.width;
+            object.width = options.json && !isFinite(message.width) ? String(message.width) : message.width;
         if (message.height != null && message.hasOwnProperty("height"))
-            if (typeof message.height === "number")
-                object.height = options.longs === String ? String(message.height) : message.height;
-            else
-                object.height = options.longs === String ? $util.Long.prototype.toString.call(message.height) : options.longs === Number ? new $util.LongBits(message.height.low >>> 0, message.height.high >>> 0).toNumber() : message.height;
+            object.height = options.json && !isFinite(message.height) ? String(message.height) : message.height;
         if (message.frontUrl != null && message.hasOwnProperty("frontUrl"))
             object.frontUrl = message.frontUrl;
         if (message.backUrl != null && message.hasOwnProperty("backUrl"))
@@ -527,6 +522,13 @@ $root.GameComponent = (function() {
             for (var j = 0; j < keys2.length; ++j)
                 object.additionalProperties[keys2[j]] = message.additionalProperties[keys2[j]];
         }
+        if (message.movingPlayer != null && message.hasOwnProperty("movingPlayer"))
+            if (typeof message.movingPlayer === "number")
+                object.movingPlayer = options.longs === String ? String(message.movingPlayer) : message.movingPlayer;
+            else
+                object.movingPlayer = options.longs === String ? $util.Long.prototype.toString.call(message.movingPlayer) : options.longs === Number ? new $util.LongBits(message.movingPlayer.low >>> 0, message.movingPlayer.high >>> 0).toNumber() : message.movingPlayer;
+        if (message.faceUp != null && message.hasOwnProperty("faceUp"))
+            object.faceUp = message.faceUp;
         return object;
     };
 
@@ -566,10 +568,11 @@ $root.GameComponentStack = (function() {
      * @interface IGameComponentStack
      * @property {string|null} [uuid] GameComponentStack uuid
      * @property {Array.<IGameComponent>|null} [members] GameComponentStack members
-     * @property {number|Long|null} [xPos] GameComponentStack xPos
-     * @property {number|Long|null} [yPos] GameComponentStack yPos
+     * @property {number|null} [xPos] GameComponentStack xPos
+     * @property {number|null} [yPos] GameComponentStack yPos
      * @property {number|Long|null} [rotation] GameComponentStack rotation
      * @property {string|null} [testing] GameComponentStack testing
+     * @property {number|Long|null} [movingPlayer] GameComponentStack movingPlayer
      */
 
     /**
@@ -606,19 +609,19 @@ $root.GameComponentStack = (function() {
 
     /**
      * GameComponentStack xPos.
-     * @member {number|Long} xPos
+     * @member {number} xPos
      * @memberof GameComponentStack
      * @instance
      */
-    GameComponentStack.prototype.xPos = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+    GameComponentStack.prototype.xPos = 0;
 
     /**
      * GameComponentStack yPos.
-     * @member {number|Long} yPos
+     * @member {number} yPos
      * @memberof GameComponentStack
      * @instance
      */
-    GameComponentStack.prototype.yPos = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+    GameComponentStack.prototype.yPos = 0;
 
     /**
      * GameComponentStack rotation.
@@ -635,6 +638,14 @@ $root.GameComponentStack = (function() {
      * @instance
      */
     GameComponentStack.prototype.testing = "";
+
+    /**
+     * GameComponentStack movingPlayer.
+     * @member {number|Long} movingPlayer
+     * @memberof GameComponentStack
+     * @instance
+     */
+    GameComponentStack.prototype.movingPlayer = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
     /**
      * Creates a new GameComponentStack instance using the specified properties.
@@ -666,13 +677,15 @@ $root.GameComponentStack = (function() {
             for (var i = 0; i < message.members.length; ++i)
                 $root.GameComponent.encode(message.members[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
         if (message.xPos != null && message.hasOwnProperty("xPos"))
-            writer.uint32(/* id 3, wireType 0 =*/24).int64(message.xPos);
+            writer.uint32(/* id 3, wireType 5 =*/29).float(message.xPos);
         if (message.yPos != null && message.hasOwnProperty("yPos"))
-            writer.uint32(/* id 4, wireType 0 =*/32).int64(message.yPos);
+            writer.uint32(/* id 4, wireType 5 =*/37).float(message.yPos);
         if (message.rotation != null && message.hasOwnProperty("rotation"))
             writer.uint32(/* id 5, wireType 0 =*/40).int64(message.rotation);
         if (message.testing != null && message.hasOwnProperty("testing"))
             writer.uint32(/* id 6, wireType 2 =*/50).string(message.testing);
+        if (message.movingPlayer != null && message.hasOwnProperty("movingPlayer"))
+            writer.uint32(/* id 7, wireType 0 =*/56).int64(message.movingPlayer);
         return writer;
     };
 
@@ -716,16 +729,19 @@ $root.GameComponentStack = (function() {
                 message.members.push($root.GameComponent.decode(reader, reader.uint32()));
                 break;
             case 3:
-                message.xPos = reader.int64();
+                message.xPos = reader.float();
                 break;
             case 4:
-                message.yPos = reader.int64();
+                message.yPos = reader.float();
                 break;
             case 5:
                 message.rotation = reader.int64();
                 break;
             case 6:
                 message.testing = reader.string();
+                break;
+            case 7:
+                message.movingPlayer = reader.int64();
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -775,17 +791,20 @@ $root.GameComponentStack = (function() {
             }
         }
         if (message.xPos != null && message.hasOwnProperty("xPos"))
-            if (!$util.isInteger(message.xPos) && !(message.xPos && $util.isInteger(message.xPos.low) && $util.isInteger(message.xPos.high)))
-                return "xPos: integer|Long expected";
+            if (typeof message.xPos !== "number")
+                return "xPos: number expected";
         if (message.yPos != null && message.hasOwnProperty("yPos"))
-            if (!$util.isInteger(message.yPos) && !(message.yPos && $util.isInteger(message.yPos.low) && $util.isInteger(message.yPos.high)))
-                return "yPos: integer|Long expected";
+            if (typeof message.yPos !== "number")
+                return "yPos: number expected";
         if (message.rotation != null && message.hasOwnProperty("rotation"))
             if (!$util.isInteger(message.rotation) && !(message.rotation && $util.isInteger(message.rotation.low) && $util.isInteger(message.rotation.high)))
                 return "rotation: integer|Long expected";
         if (message.testing != null && message.hasOwnProperty("testing"))
             if (!$util.isString(message.testing))
                 return "testing: string expected";
+        if (message.movingPlayer != null && message.hasOwnProperty("movingPlayer"))
+            if (!$util.isInteger(message.movingPlayer) && !(message.movingPlayer && $util.isInteger(message.movingPlayer.low) && $util.isInteger(message.movingPlayer.high)))
+                return "movingPlayer: integer|Long expected";
         return null;
     };
 
@@ -814,23 +833,9 @@ $root.GameComponentStack = (function() {
             }
         }
         if (object.xPos != null)
-            if ($util.Long)
-                (message.xPos = $util.Long.fromValue(object.xPos)).unsigned = false;
-            else if (typeof object.xPos === "string")
-                message.xPos = parseInt(object.xPos, 10);
-            else if (typeof object.xPos === "number")
-                message.xPos = object.xPos;
-            else if (typeof object.xPos === "object")
-                message.xPos = new $util.LongBits(object.xPos.low >>> 0, object.xPos.high >>> 0).toNumber();
+            message.xPos = Number(object.xPos);
         if (object.yPos != null)
-            if ($util.Long)
-                (message.yPos = $util.Long.fromValue(object.yPos)).unsigned = false;
-            else if (typeof object.yPos === "string")
-                message.yPos = parseInt(object.yPos, 10);
-            else if (typeof object.yPos === "number")
-                message.yPos = object.yPos;
-            else if (typeof object.yPos === "object")
-                message.yPos = new $util.LongBits(object.yPos.low >>> 0, object.yPos.high >>> 0).toNumber();
+            message.yPos = Number(object.yPos);
         if (object.rotation != null)
             if ($util.Long)
                 (message.rotation = $util.Long.fromValue(object.rotation)).unsigned = false;
@@ -842,6 +847,15 @@ $root.GameComponentStack = (function() {
                 message.rotation = new $util.LongBits(object.rotation.low >>> 0, object.rotation.high >>> 0).toNumber();
         if (object.testing != null)
             message.testing = String(object.testing);
+        if (object.movingPlayer != null)
+            if ($util.Long)
+                (message.movingPlayer = $util.Long.fromValue(object.movingPlayer)).unsigned = false;
+            else if (typeof object.movingPlayer === "string")
+                message.movingPlayer = parseInt(object.movingPlayer, 10);
+            else if (typeof object.movingPlayer === "number")
+                message.movingPlayer = object.movingPlayer;
+            else if (typeof object.movingPlayer === "object")
+                message.movingPlayer = new $util.LongBits(object.movingPlayer.low >>> 0, object.movingPlayer.high >>> 0).toNumber();
         return message;
     };
 
@@ -862,22 +876,19 @@ $root.GameComponentStack = (function() {
             object.members = [];
         if (options.defaults) {
             object.uuid = "";
-            if ($util.Long) {
-                var long = new $util.Long(0, 0, false);
-                object.xPos = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-            } else
-                object.xPos = options.longs === String ? "0" : 0;
-            if ($util.Long) {
-                var long = new $util.Long(0, 0, false);
-                object.yPos = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-            } else
-                object.yPos = options.longs === String ? "0" : 0;
+            object.xPos = 0;
+            object.yPos = 0;
             if ($util.Long) {
                 var long = new $util.Long(0, 0, false);
                 object.rotation = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
             } else
                 object.rotation = options.longs === String ? "0" : 0;
             object.testing = "";
+            if ($util.Long) {
+                var long = new $util.Long(0, 0, false);
+                object.movingPlayer = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+            } else
+                object.movingPlayer = options.longs === String ? "0" : 0;
         }
         if (message.uuid != null && message.hasOwnProperty("uuid"))
             object.uuid = message.uuid;
@@ -887,15 +898,9 @@ $root.GameComponentStack = (function() {
                 object.members[j] = $root.GameComponent.toObject(message.members[j], options);
         }
         if (message.xPos != null && message.hasOwnProperty("xPos"))
-            if (typeof message.xPos === "number")
-                object.xPos = options.longs === String ? String(message.xPos) : message.xPos;
-            else
-                object.xPos = options.longs === String ? $util.Long.prototype.toString.call(message.xPos) : options.longs === Number ? new $util.LongBits(message.xPos.low >>> 0, message.xPos.high >>> 0).toNumber() : message.xPos;
+            object.xPos = options.json && !isFinite(message.xPos) ? String(message.xPos) : message.xPos;
         if (message.yPos != null && message.hasOwnProperty("yPos"))
-            if (typeof message.yPos === "number")
-                object.yPos = options.longs === String ? String(message.yPos) : message.yPos;
-            else
-                object.yPos = options.longs === String ? $util.Long.prototype.toString.call(message.yPos) : options.longs === Number ? new $util.LongBits(message.yPos.low >>> 0, message.yPos.high >>> 0).toNumber() : message.yPos;
+            object.yPos = options.json && !isFinite(message.yPos) ? String(message.yPos) : message.yPos;
         if (message.rotation != null && message.hasOwnProperty("rotation"))
             if (typeof message.rotation === "number")
                 object.rotation = options.longs === String ? String(message.rotation) : message.rotation;
@@ -903,6 +908,11 @@ $root.GameComponentStack = (function() {
                 object.rotation = options.longs === String ? $util.Long.prototype.toString.call(message.rotation) : options.longs === Number ? new $util.LongBits(message.rotation.low >>> 0, message.rotation.high >>> 0).toNumber() : message.rotation;
         if (message.testing != null && message.hasOwnProperty("testing"))
             object.testing = message.testing;
+        if (message.movingPlayer != null && message.hasOwnProperty("movingPlayer"))
+            if (typeof message.movingPlayer === "number")
+                object.movingPlayer = options.longs === String ? String(message.movingPlayer) : message.movingPlayer;
+            else
+                object.movingPlayer = options.longs === String ? $util.Long.prototype.toString.call(message.movingPlayer) : options.longs === Number ? new $util.LongBits(message.movingPlayer.low >>> 0, message.movingPlayer.high >>> 0).toNumber() : message.movingPlayer;
         return object;
     };
 
@@ -927,8 +937,8 @@ $root.Table = (function() {
      * @exports ITable
      * @interface ITable
      * @property {string|null} [boardName] Table boardName
-     * @property {number|Long|null} [width] Table width
-     * @property {number|Long|null} [height] Table height
+     * @property {number|null} [width] Table width
+     * @property {number|null} [height] Table height
      * @property {Array.<IGameComponentStack>|null} [stacks] Table stacks
      * @property {Array.<IGameComponent>|null} [components] Table components
      * @property {boolean|null} [hideGrid] Table hideGrid
@@ -961,19 +971,19 @@ $root.Table = (function() {
 
     /**
      * Table width.
-     * @member {number|Long} width
+     * @member {number} width
      * @memberof Table
      * @instance
      */
-    Table.prototype.width = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+    Table.prototype.width = 0;
 
     /**
      * Table height.
-     * @member {number|Long} height
+     * @member {number} height
      * @memberof Table
      * @instance
      */
-    Table.prototype.height = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+    Table.prototype.height = 0;
 
     /**
      * Table stacks.
@@ -1026,9 +1036,9 @@ $root.Table = (function() {
         if (message.boardName != null && message.hasOwnProperty("boardName"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.boardName);
         if (message.width != null && message.hasOwnProperty("width"))
-            writer.uint32(/* id 2, wireType 0 =*/16).int64(message.width);
+            writer.uint32(/* id 2, wireType 5 =*/21).float(message.width);
         if (message.height != null && message.hasOwnProperty("height"))
-            writer.uint32(/* id 3, wireType 0 =*/24).int64(message.height);
+            writer.uint32(/* id 3, wireType 5 =*/29).float(message.height);
         if (message.stacks != null && message.stacks.length)
             for (var i = 0; i < message.stacks.length; ++i)
                 $root.GameComponentStack.encode(message.stacks[i], writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
@@ -1075,10 +1085,10 @@ $root.Table = (function() {
                 message.boardName = reader.string();
                 break;
             case 2:
-                message.width = reader.int64();
+                message.width = reader.float();
                 break;
             case 3:
-                message.height = reader.int64();
+                message.height = reader.float();
                 break;
             case 4:
                 if (!(message.stacks && message.stacks.length))
@@ -1132,11 +1142,11 @@ $root.Table = (function() {
             if (!$util.isString(message.boardName))
                 return "boardName: string expected";
         if (message.width != null && message.hasOwnProperty("width"))
-            if (!$util.isInteger(message.width) && !(message.width && $util.isInteger(message.width.low) && $util.isInteger(message.width.high)))
-                return "width: integer|Long expected";
+            if (typeof message.width !== "number")
+                return "width: number expected";
         if (message.height != null && message.hasOwnProperty("height"))
-            if (!$util.isInteger(message.height) && !(message.height && $util.isInteger(message.height.low) && $util.isInteger(message.height.high)))
-                return "height: integer|Long expected";
+            if (typeof message.height !== "number")
+                return "height: number expected";
         if (message.stacks != null && message.hasOwnProperty("stacks")) {
             if (!Array.isArray(message.stacks))
                 return "stacks: array expected";
@@ -1176,23 +1186,9 @@ $root.Table = (function() {
         if (object.boardName != null)
             message.boardName = String(object.boardName);
         if (object.width != null)
-            if ($util.Long)
-                (message.width = $util.Long.fromValue(object.width)).unsigned = false;
-            else if (typeof object.width === "string")
-                message.width = parseInt(object.width, 10);
-            else if (typeof object.width === "number")
-                message.width = object.width;
-            else if (typeof object.width === "object")
-                message.width = new $util.LongBits(object.width.low >>> 0, object.width.high >>> 0).toNumber();
+            message.width = Number(object.width);
         if (object.height != null)
-            if ($util.Long)
-                (message.height = $util.Long.fromValue(object.height)).unsigned = false;
-            else if (typeof object.height === "string")
-                message.height = parseInt(object.height, 10);
-            else if (typeof object.height === "number")
-                message.height = object.height;
-            else if (typeof object.height === "object")
-                message.height = new $util.LongBits(object.height.low >>> 0, object.height.high >>> 0).toNumber();
+            message.height = Number(object.height);
         if (object.stacks) {
             if (!Array.isArray(object.stacks))
                 throw TypeError(".Table.stacks: array expected");
@@ -1237,30 +1233,16 @@ $root.Table = (function() {
         }
         if (options.defaults) {
             object.boardName = "";
-            if ($util.Long) {
-                var long = new $util.Long(0, 0, false);
-                object.width = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-            } else
-                object.width = options.longs === String ? "0" : 0;
-            if ($util.Long) {
-                var long = new $util.Long(0, 0, false);
-                object.height = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-            } else
-                object.height = options.longs === String ? "0" : 0;
+            object.width = 0;
+            object.height = 0;
             object.hideGrid = false;
         }
         if (message.boardName != null && message.hasOwnProperty("boardName"))
             object.boardName = message.boardName;
         if (message.width != null && message.hasOwnProperty("width"))
-            if (typeof message.width === "number")
-                object.width = options.longs === String ? String(message.width) : message.width;
-            else
-                object.width = options.longs === String ? $util.Long.prototype.toString.call(message.width) : options.longs === Number ? new $util.LongBits(message.width.low >>> 0, message.width.high >>> 0).toNumber() : message.width;
+            object.width = options.json && !isFinite(message.width) ? String(message.width) : message.width;
         if (message.height != null && message.hasOwnProperty("height"))
-            if (typeof message.height === "number")
-                object.height = options.longs === String ? String(message.height) : message.height;
-            else
-                object.height = options.longs === String ? $util.Long.prototype.toString.call(message.height) : options.longs === Number ? new $util.LongBits(message.height.low >>> 0, message.height.high >>> 0).toNumber() : message.height;
+            object.height = options.json && !isFinite(message.height) ? String(message.height) : message.height;
         if (message.stacks && message.stacks.length) {
             object.stacks = [];
             for (var j = 0; j < message.stacks.length; ++j)

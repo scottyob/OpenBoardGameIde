@@ -40,13 +40,13 @@ class Viewer extends Component {
     const camera = new THREE.PerspectiveCamera(
       75,
       width / height,
-      0.1,
+      0.001,
       10000
     )
     const renderer = new THREE.WebGLRenderer({ antialias: true })
 
     // Table
-    const geometry = new THREE.BoxGeometry(2.2, 0.08, 0.8);
+    const geometry = new THREE.BoxGeometry(2.2, 0.00001, 0.8);
     let tableTexture = new THREE.TextureLoader().load( "img/table.jpg");
     tableTexture.repeat = new THREE.Vector2(5,5);
     tableTexture.wrapS = tableTexture.wrapT = THREE.RepeatWrapping;
@@ -54,7 +54,7 @@ class Viewer extends Component {
     const cube = new THREE.Mesh(geometry, material);
     cube.position.x = 0;
     cube.position.z = 0;
-    cube.position.y = -0.00001; // Move down a tiny little bit so origin is exposed
+    cube.position.y = -0.0001; // Move down a tiny little bit so origin is exposed
 
     camera.position.x = 0;
     camera.position.y = CAMERA_HEIGHT;
@@ -176,7 +176,7 @@ class Viewer extends Component {
 
       // Find an item in this stack.
       let boxGeometry = new THREE.BoxGeometry(
-        stack.members[0].width, 0.15, stack.members[0].height);
+        stack.members[0].width, 0.015, stack.members[0].height);
       let box = new THREE.Mesh(
         boxGeometry,
         materials
@@ -184,7 +184,7 @@ class Viewer extends Component {
 
 
       box.position.x = stack.xPos || 0;
-      box.position.y = 0;
+      box.position.y = 0.015;
       box.position.z = stack.yPos || 0;
       box.rotateY(THREE.Math.degToRad(stack.rotation));
 
