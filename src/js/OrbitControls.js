@@ -123,7 +123,7 @@ var OrbitControls = function ( object, domElement ) {
 			zoomScale = getZoomScale();
 
 		}
-
+		// scale += 0.1;
 		scale /= zoomScale;
 
 	};
@@ -135,7 +135,7 @@ var OrbitControls = function ( object, domElement ) {
 			zoomScale = getZoomScale();
 
 		}
-
+		// scale -= 0.1;
 		scale *= zoomScale;
 
 	};
@@ -178,7 +178,11 @@ var OrbitControls = function ( object, domElement ) {
 		// restrict phi to be betwee EPS and PI-EPS
 		phi = Math.max( EPS, Math.min( Math.PI - EPS, phi ) );
 
-		var radius = offset.length() * scale;
+		var radius = offset.length();// * scale;
+
+		this.object.zoom = scale;
+		this.object.updateProjectionMatrix();
+
 
 		// restrict radius to be between desired limits
 		radius = Math.max( this.minDistance, Math.min( this.maxDistance, radius ) );
@@ -193,7 +197,7 @@ var OrbitControls = function ( object, domElement ) {
 
 		thetaDelta = 0;
 		phiDelta = 0;
-		scale = 1;
+		// scale = 1;
 
 		if ( lastPosition.distanceTo( this.object.position ) > 0 ) {
 

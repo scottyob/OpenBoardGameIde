@@ -3,7 +3,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { LeadPencil } from 'mdi-material-ui'
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
-import { GameComponent, GameComponentStack } from '../BoardGame.js';
+import { GameComponent, GameComponentStack, Player } from '../BoardGame.js';
 import { didUpdateSelected } from '../actions/index.js';
 
 import Input from '@material-ui/core/Input';
@@ -88,7 +88,12 @@ class PropertiesEditor extends Component {
         <TextField id="yPos" label="y position" type="number" value={this.props.selected.yPos} />
         <TextField id="rotation" label="Rotation" type="number" value={this.props.selected.rotation} />
       </form>;
-
+    } else if (this.props.selected instanceof Player) {
+      form = <form onChange={this.handleChange} className={classes.form}>
+        <TextField id="xPos" label="x position" type="number" value={this.props.selected.xPos} />
+        <TextField id="yPos" label="y position" type="number" value={this.props.selected.yPos} />
+        <TextField id="rotation" label="Rotation" type="number" value={this.props.selected.rotation} />
+      </form>
     } else {
       console.log("Properties of Unknown Type");
     }

@@ -24,3 +24,7 @@ export const didCreateStack = () => (
 export const didCreateComponent = underUuid => (
   { type: constants.CREATE_COMPONENT, payload: underUuid }
 )
+
+export const didCreatePlayer = () => (
+  { type: constants.CREATE_PLAYER }
+)

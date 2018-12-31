@@ -18,6 +18,15 @@ const styles = theme => {
 
 const CAMERA_HEIGHT = 2;
 
+const PLAYER_COLORS = {
+  1: new THREE.Color('violet'),
+  2: new THREE.Color('blue'),
+  3: new THREE.Color('green'),
+  4: new THREE.Color('yellow'),
+  5: new THREE.Color('orange'),
+  6: new THREE.Color('red')
+}
+
 class Viewer extends Component {
 
   constructor(props) {
@@ -37,12 +46,22 @@ class Viewer extends Component {
     const height = this.mount.clientHeight
 
     const scene = new THREE.Scene()
-    const camera = new THREE.PerspectiveCamera(
-      75,
-      width / height,
+    // const camera = new THREE.PerspectiveCamera(
+    //   75,
+    //   width / height,
+    //   0.001,
+    //   10000
+    // )
+    const frustrumSize = 2;
+    var aspect = width / height;
+    const camera = new THREE.OrthographicCamera(
+      0.5 * frustrumSize * aspect / -2,
+      0.5 * frustrumSize * aspect / 2,
+      frustrumSize / 2,
+      frustrumSize / -2,
       0.001,
-      10000
-    )
+      1000
+    );
     const renderer = new THREE.WebGLRenderer({ antialias: true })
 
     // Table
@@ -69,13 +88,14 @@ class Viewer extends Component {
     this.renderer = renderer
     this.material = material
     this.controls = new OrbitControls( camera, renderer.domElement );
+    // this.controls = new THREE.OrbitControls( camera, renderer.domElement );
     this.controls.userPanSpeed = 10;
     this.controls.userPan = false;
     this.cube = cube
 
     this.ry += 1;
     this.camera.rotation.y = 180 * Math.PI / 180;  // Face Backwards.
-    this.camera.rotation.x = 70 * Math.PI / 180;  // Look down a little
+    this.camera.rotation.x = 90 * Math.PI / 180;  // Look down a little
 
     this.mount.appendChild(this.renderer.domElement)
     this.start()
@@ -182,7 +202,6 @@ class Viewer extends Component {
         materials
       )
 
-
       box.position.x = stack.xPos || 0;
       box.position.y = 0.015;
       box.position.z = stack.yPos || 0;
@@ -220,6 +239,38 @@ class Viewer extends Component {
        }
 
        this.group.add(card);
+    }
+
+    // Add players into the scene
+    for(let i = 0; i < this.props.table.players.length; i++) {
+      let player = this.props.table.players[i];
+      let material = new THREE.MeshBasicMaterial( {
+        transparent: true,
+        color: PLAYER_COLORS[i+1]
+      });
+
+      let playerGeometry = new THREE.CylinderGeometry(0.25, 0.25, 0.5);
+      let playerMesh = new THREE.Mesh( playerGeometry, material);
+      playerMesh.position.x = player.xPos;
+      playerMesh.position.z = player.yPos;
+      playerMesh.rotateY(THREE.Math.degToRad(player.rotation));
+
+      let playerPointerGeometry = new THREE.ConeBufferGeometry(0.05, 0.5);
+      playerPointerGeometry.translate( 0, 0.25, 0);
+      let playerPointerMesh = new THREE.Mesh( playerPointerGeometry, material);
+      playerPointerMesh.position.x = player.xPos;
+      playerPointerMesh.position.z = player.yPos;
+      playerPointerMesh.position.y = 0.5;
+      playerPointerMesh.rotateX(THREE.Math.degToRad(90));
+      playerPointerMesh.rotateZ(THREE.Math.degToRad(player.rotation));
+
+      if(this.props.selectedUuid === ("player-" + (i+1) )) {
+         this.drawMeshOutline(playerGeometry, playerMesh, player.rotation);
+         this.centerCamera(player);
+      }
+
+      this.group.add(playerMesh);
+      this.group.add(playerPointerMesh);
     }
 
     this.scene.add(this.group);

@@ -930,6 +930,310 @@ $root.GameComponentStack = (function() {
     return GameComponentStack;
 })();
 
+$root.Player = (function() {
+
+    /**
+     * Properties of a Player.
+     * @exports IPlayer
+     * @interface IPlayer
+     * @property {number|Long|null} [number] Player number
+     * @property {number|null} [xPos] Player xPos
+     * @property {number|null} [yPos] Player yPos
+     * @property {number|Long|null} [rotation] Player rotation
+     * @property {string|null} [name] Player name
+     */
+
+    /**
+     * Constructs a new Player.
+     * @exports Player
+     * @classdesc Represents a Player.
+     * @implements IPlayer
+     * @constructor
+     * @param {IPlayer=} [properties] Properties to set
+     */
+    function Player(properties) {
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * Player number.
+     * @member {number|Long} number
+     * @memberof Player
+     * @instance
+     */
+    Player.prototype.number = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+    /**
+     * Player xPos.
+     * @member {number} xPos
+     * @memberof Player
+     * @instance
+     */
+    Player.prototype.xPos = 0;
+
+    /**
+     * Player yPos.
+     * @member {number} yPos
+     * @memberof Player
+     * @instance
+     */
+    Player.prototype.yPos = 0;
+
+    /**
+     * Player rotation.
+     * @member {number|Long} rotation
+     * @memberof Player
+     * @instance
+     */
+    Player.prototype.rotation = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+    /**
+     * Player name.
+     * @member {string} name
+     * @memberof Player
+     * @instance
+     */
+    Player.prototype.name = "";
+
+    /**
+     * Creates a new Player instance using the specified properties.
+     * @function create
+     * @memberof Player
+     * @static
+     * @param {IPlayer=} [properties] Properties to set
+     * @returns {Player} Player instance
+     */
+    Player.create = function create(properties) {
+        return new Player(properties);
+    };
+
+    /**
+     * Encodes the specified Player message. Does not implicitly {@link Player.verify|verify} messages.
+     * @function encode
+     * @memberof Player
+     * @static
+     * @param {IPlayer} message Player message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    Player.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.number != null && message.hasOwnProperty("number"))
+            writer.uint32(/* id 1, wireType 0 =*/8).int64(message.number);
+        if (message.xPos != null && message.hasOwnProperty("xPos"))
+            writer.uint32(/* id 2, wireType 5 =*/21).float(message.xPos);
+        if (message.yPos != null && message.hasOwnProperty("yPos"))
+            writer.uint32(/* id 3, wireType 5 =*/29).float(message.yPos);
+        if (message.rotation != null && message.hasOwnProperty("rotation"))
+            writer.uint32(/* id 4, wireType 0 =*/32).int64(message.rotation);
+        if (message.name != null && message.hasOwnProperty("name"))
+            writer.uint32(/* id 5, wireType 2 =*/42).string(message.name);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified Player message, length delimited. Does not implicitly {@link Player.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof Player
+     * @static
+     * @param {IPlayer} message Player message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    Player.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a Player message from the specified reader or buffer.
+     * @function decode
+     * @memberof Player
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {Player} Player
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    Player.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Player();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.number = reader.int64();
+                break;
+            case 2:
+                message.xPos = reader.float();
+                break;
+            case 3:
+                message.yPos = reader.float();
+                break;
+            case 4:
+                message.rotation = reader.int64();
+                break;
+            case 5:
+                message.name = reader.string();
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a Player message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof Player
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {Player} Player
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    Player.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a Player message.
+     * @function verify
+     * @memberof Player
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    Player.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.number != null && message.hasOwnProperty("number"))
+            if (!$util.isInteger(message.number) && !(message.number && $util.isInteger(message.number.low) && $util.isInteger(message.number.high)))
+                return "number: integer|Long expected";
+        if (message.xPos != null && message.hasOwnProperty("xPos"))
+            if (typeof message.xPos !== "number")
+                return "xPos: number expected";
+        if (message.yPos != null && message.hasOwnProperty("yPos"))
+            if (typeof message.yPos !== "number")
+                return "yPos: number expected";
+        if (message.rotation != null && message.hasOwnProperty("rotation"))
+            if (!$util.isInteger(message.rotation) && !(message.rotation && $util.isInteger(message.rotation.low) && $util.isInteger(message.rotation.high)))
+                return "rotation: integer|Long expected";
+        if (message.name != null && message.hasOwnProperty("name"))
+            if (!$util.isString(message.name))
+                return "name: string expected";
+        return null;
+    };
+
+    /**
+     * Creates a Player message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof Player
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {Player} Player
+     */
+    Player.fromObject = function fromObject(object) {
+        if (object instanceof $root.Player)
+            return object;
+        var message = new $root.Player();
+        if (object.number != null)
+            if ($util.Long)
+                (message.number = $util.Long.fromValue(object.number)).unsigned = false;
+            else if (typeof object.number === "string")
+                message.number = parseInt(object.number, 10);
+            else if (typeof object.number === "number")
+                message.number = object.number;
+            else if (typeof object.number === "object")
+                message.number = new $util.LongBits(object.number.low >>> 0, object.number.high >>> 0).toNumber();
+        if (object.xPos != null)
+            message.xPos = Number(object.xPos);
+        if (object.yPos != null)
+            message.yPos = Number(object.yPos);
+        if (object.rotation != null)
+            if ($util.Long)
+                (message.rotation = $util.Long.fromValue(object.rotation)).unsigned = false;
+            else if (typeof object.rotation === "string")
+                message.rotation = parseInt(object.rotation, 10);
+            else if (typeof object.rotation === "number")
+                message.rotation = object.rotation;
+            else if (typeof object.rotation === "object")
+                message.rotation = new $util.LongBits(object.rotation.low >>> 0, object.rotation.high >>> 0).toNumber();
+        if (object.name != null)
+            message.name = String(object.name);
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a Player message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof Player
+     * @static
+     * @param {Player} message Player
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    Player.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.defaults) {
+            if ($util.Long) {
+                var long = new $util.Long(0, 0, false);
+                object.number = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+            } else
+                object.number = options.longs === String ? "0" : 0;
+            object.xPos = 0;
+            object.yPos = 0;
+            if ($util.Long) {
+                var long = new $util.Long(0, 0, false);
+                object.rotation = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+            } else
+                object.rotation = options.longs === String ? "0" : 0;
+            object.name = "";
+        }
+        if (message.number != null && message.hasOwnProperty("number"))
+            if (typeof message.number === "number")
+                object.number = options.longs === String ? String(message.number) : message.number;
+            else
+                object.number = options.longs === String ? $util.Long.prototype.toString.call(message.number) : options.longs === Number ? new $util.LongBits(message.number.low >>> 0, message.number.high >>> 0).toNumber() : message.number;
+        if (message.xPos != null && message.hasOwnProperty("xPos"))
+            object.xPos = options.json && !isFinite(message.xPos) ? String(message.xPos) : message.xPos;
+        if (message.yPos != null && message.hasOwnProperty("yPos"))
+            object.yPos = options.json && !isFinite(message.yPos) ? String(message.yPos) : message.yPos;
+        if (message.rotation != null && message.hasOwnProperty("rotation"))
+            if (typeof message.rotation === "number")
+                object.rotation = options.longs === String ? String(message.rotation) : message.rotation;
+            else
+                object.rotation = options.longs === String ? $util.Long.prototype.toString.call(message.rotation) : options.longs === Number ? new $util.LongBits(message.rotation.low >>> 0, message.rotation.high >>> 0).toNumber() : message.rotation;
+        if (message.name != null && message.hasOwnProperty("name"))
+            object.name = message.name;
+        return object;
+    };
+
+    /**
+     * Converts this Player to JSON.
+     * @function toJSON
+     * @memberof Player
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    Player.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return Player;
+})();
+
 $root.Table = (function() {
 
     /**
@@ -941,6 +1245,7 @@ $root.Table = (function() {
      * @property {number|null} [height] Table height
      * @property {Array.<IGameComponentStack>|null} [stacks] Table stacks
      * @property {Array.<IGameComponent>|null} [components] Table components
+     * @property {Array.<IPlayer>|null} [players] Table players
      * @property {boolean|null} [hideGrid] Table hideGrid
      */
 
@@ -955,6 +1260,7 @@ $root.Table = (function() {
     function Table(properties) {
         this.stacks = [];
         this.components = [];
+        this.players = [];
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
@@ -1002,6 +1308,14 @@ $root.Table = (function() {
     Table.prototype.components = $util.emptyArray;
 
     /**
+     * Table players.
+     * @member {Array.<IPlayer>} players
+     * @memberof Table
+     * @instance
+     */
+    Table.prototype.players = $util.emptyArray;
+
+    /**
      * Table hideGrid.
      * @member {boolean} hideGrid
      * @memberof Table
@@ -1045,6 +1359,9 @@ $root.Table = (function() {
         if (message.components != null && message.components.length)
             for (var i = 0; i < message.components.length; ++i)
                 $root.GameComponent.encode(message.components[i], writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
+        if (message.players != null && message.players.length)
+            for (var i = 0; i < message.players.length; ++i)
+                $root.Player.encode(message.players[i], writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
         if (message.hideGrid != null && message.hasOwnProperty("hideGrid"))
             writer.uint32(/* id 10, wireType 0 =*/80).bool(message.hideGrid);
         return writer;
@@ -1099,6 +1416,11 @@ $root.Table = (function() {
                 if (!(message.components && message.components.length))
                     message.components = [];
                 message.components.push($root.GameComponent.decode(reader, reader.uint32()));
+                break;
+            case 6:
+                if (!(message.players && message.players.length))
+                    message.players = [];
+                message.players.push($root.Player.decode(reader, reader.uint32()));
                 break;
             case 10:
                 message.hideGrid = reader.bool();
@@ -1165,6 +1487,15 @@ $root.Table = (function() {
                     return "components." + error;
             }
         }
+        if (message.players != null && message.hasOwnProperty("players")) {
+            if (!Array.isArray(message.players))
+                return "players: array expected";
+            for (var i = 0; i < message.players.length; ++i) {
+                var error = $root.Player.verify(message.players[i]);
+                if (error)
+                    return "players." + error;
+            }
+        }
         if (message.hideGrid != null && message.hasOwnProperty("hideGrid"))
             if (typeof message.hideGrid !== "boolean")
                 return "hideGrid: boolean expected";
@@ -1209,6 +1540,16 @@ $root.Table = (function() {
                 message.components[i] = $root.GameComponent.fromObject(object.components[i]);
             }
         }
+        if (object.players) {
+            if (!Array.isArray(object.players))
+                throw TypeError(".Table.players: array expected");
+            message.players = [];
+            for (var i = 0; i < object.players.length; ++i) {
+                if (typeof object.players[i] !== "object")
+                    throw TypeError(".Table.players: object expected");
+                message.players[i] = $root.Player.fromObject(object.players[i]);
+            }
+        }
         if (object.hideGrid != null)
             message.hideGrid = Boolean(object.hideGrid);
         return message;
@@ -1230,6 +1571,7 @@ $root.Table = (function() {
         if (options.arrays || options.defaults) {
             object.stacks = [];
             object.components = [];
+            object.players = [];
         }
         if (options.defaults) {
             object.boardName = "";
@@ -1252,6 +1594,11 @@ $root.Table = (function() {
             object.components = [];
             for (var j = 0; j < message.components.length; ++j)
                 object.components[j] = $root.GameComponent.toObject(message.components[j], options);
+        }
+        if (message.players && message.players.length) {
+            object.players = [];
+            for (var j = 0; j < message.players.length; ++j)
+                object.players[j] = $root.Player.toObject(message.players[j], options);
         }
         if (message.hideGrid != null && message.hasOwnProperty("hideGrid"))
             object.hideGrid = message.hideGrid;

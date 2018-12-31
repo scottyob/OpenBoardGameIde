@@ -1,6 +1,6 @@
 ##
 Generating BoardGame classes:
-# pbjs -t static-module -w commonjs -o src/js/new.js ../definitions/board.prot
+# pbjs -t static-module -w commonjs -o src/js/new.js ../definitions/board.proto
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 

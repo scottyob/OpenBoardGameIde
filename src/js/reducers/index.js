@@ -1,6 +1,6 @@
 import * as constants from "../constants/action-types";
 import BoardLib from "../board.js";
-import { GameComponent, GameComponentStack } from "../BoardGame.js";
+import { GameComponent, GameComponentStack, Player } from "../BoardGame.js";
 import { Math } from 'three';
 
 
@@ -71,6 +71,19 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         table: newTable
       }
+    }
+    case constants.CREATE_PLAYER: {
+      let newTable = BoardLib.cloneTable(state.table);
+      newTable.players.push(new Player({
+        xPos: -1,
+        yPos: -1,
+        name: "player"
+      }))
+
+      return {
+        ...state,
+        table: newTable
+      };
     }
     default:
       return state;

@@ -30,19 +30,12 @@ class ComponentExplorer extends Component {
 
 
   didSelectElement = (item) => {
-      this.props.dispatch(actions.didChangeSelectedUuid(item));
+    this.props.dispatch(actions.didChangeSelectedUuid(item));
   }
 
   onRightClick = (info, element, yeah) => {
-    // if (info.node.props.eventKey === "root-board") {
-      // debugger;
-      // info.node.props.title
-      // let target = document.getElementById('rooty')
       let target = this.names[info.node.props.eventKey];
-      debugger;
-      // debugger;
       this.setState({ anchorEl: target });
-    // }
   }
 
   render() {
@@ -108,6 +101,17 @@ class ComponentExplorer extends Component {
       console.log("Added Component");
     }
 
+    // Add Players to TreeNode
+    var players = [];
+    for(let i = 0; i < this.props.board.players.length; i++) {
+      let player = this.props.board.players[i];
+      let ref = React.createRef();
+      let key = "player-" + (i + 1);
+      domObjects[key] = ref;
+      let title = <span ref={ref} aria-owns={anchorEl ? 'simple-menu' : null}>Player - {i + 1}</span>
+      players.push(<TreeNode title={title} key={key} />);
+    }
+
     let ref = React.createRef();
     domObjects['root-board'] = ref;
     let title = <span ref={ref} aria-owns={anchorEl ? 'simple-menu' : null}>Table</span>
@@ -133,6 +137,10 @@ class ComponentExplorer extends Component {
             handleClose();
           }}>Create Stack</MenuItem>,
           createComponent(),
+          <MenuItem onClick={ () => {
+            this.props.dispatch(actions.didCreatePlayer());
+            handleClose();
+          } }>Create Player</MenuItem>,
         ]
         break;
       case 'component':
@@ -158,6 +166,7 @@ class ComponentExplorer extends Component {
          <TreeNode title={title} key="root-board">
            {stacks}
            {components}
+           {players}
          </TreeNode>
        </Tree>
 

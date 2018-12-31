@@ -7,3 +7,4 @@ export const LOAD_TABLE = "LOAD_TABLE";
 export const DELETE = "DELETE";
 export const CREATE_STACK = "CREATE_STACK"
 export const CREATE_COMPONENT = "CREATE_COMPONENT"
+export const CREATE_PLAYER = "CREATE_PLAYER"

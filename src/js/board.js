@@ -528,6 +528,16 @@ class BoardLib {
       };
     }
 
+    // Search all the players on the board
+    if(uuid !== null && uuid.startsWith("player-")) {
+      let i = Number(uuid.split("-")[1]) - 1;
+      return {
+        component: table.players[i],
+        parent: table.players,
+        index: i
+      }
+    }
+
     // Searches all stacks on the board
     for(let stackIndex = 0; stackIndex < table.stacks.length; stackIndex++) {
       let stack = table.stacks[stackIndex];
