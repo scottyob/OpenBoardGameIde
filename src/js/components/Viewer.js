@@ -65,7 +65,7 @@ class Viewer extends Component {
     const renderer = new THREE.WebGLRenderer({ antialias: true })
 
     // Table
-    const geometry = new THREE.BoxGeometry(2.2, 0.00001, 0.8);
+    const geometry = new THREE.BoxGeometry(1, 0.00001, 1);
     let tableTexture = new THREE.TextureLoader().load( "img/table.jpg");
     tableTexture.repeat = new THREE.Vector2(5,5);
     tableTexture.wrapS = tableTexture.wrapT = THREE.RepeatWrapping;
@@ -151,8 +151,8 @@ class Viewer extends Component {
 
   centerCamera(object) {
     // Update the camera to point to the selected object.
-    this.controls.center = new THREE.Vector3(object.xPos, 0, object.yPos);
-    this.camera.position.x = object.xPos;
+    this.controls.center = new THREE.Vector3(object.xPos * -1, 0, object.yPos);
+    this.camera.position.x = object.xPos * -1;
     this.camera.position.z = object.yPos;
     this.camera.position.y = THREE.Math.clamp(this.camera.position.y, CAMERA_HEIGHT, Infinity);
   }
@@ -161,6 +161,10 @@ class Viewer extends Component {
     // Redraws the game components on the table
     this.scene.remove(this.group);
     this.group = new THREE.Group();
+
+    this.cube.scale.x = this.props.table.width;
+    this.cube.scale.z = this.props.table.height;
+
 
     // Side of card material
     let cardSideTexture = new THREE.TextureLoader().load( "img/card_side.jpg");
@@ -202,7 +206,7 @@ class Viewer extends Component {
         materials
       )
 
-      box.position.x = stack.xPos || 0;
+      box.position.x = stack.xPos * -1 || 0;
       box.position.y = 0.015;
       box.position.z = stack.yPos || 0;
       box.rotateY(THREE.Math.degToRad(stack.rotation));
@@ -228,7 +232,7 @@ class Viewer extends Component {
 
        let cardGeometry = new THREE.PlaneGeometry(component.width, component.height);
        let card = new THREE.Mesh( cardGeometry, cardMaterial );
-       card.position.x = component.xPos;
+       card.position.x = component.xPos * -1;
        card.position.z = component.yPos;
        card.rotateY(THREE.Math.degToRad(component.rotation));
        card.rotateX(THREE.Math.degToRad(-90));
@@ -251,14 +255,14 @@ class Viewer extends Component {
 
       let playerGeometry = new THREE.CylinderGeometry(0.25, 0.25, 0.5);
       let playerMesh = new THREE.Mesh( playerGeometry, material);
-      playerMesh.position.x = player.xPos;
+      playerMesh.position.x = player.xPos * -1;
       playerMesh.position.z = player.yPos;
       playerMesh.rotateY(THREE.Math.degToRad(player.rotation));
 
       let playerPointerGeometry = new THREE.ConeBufferGeometry(0.05, 0.5);
       playerPointerGeometry.translate( 0, 0.25, 0);
       let playerPointerMesh = new THREE.Mesh( playerPointerGeometry, material);
-      playerPointerMesh.position.x = player.xPos;
+      playerPointerMesh.position.x = player.xPos * -1;
       playerPointerMesh.position.z = player.yPos;
       playerPointerMesh.position.y = 0.5;
       playerPointerMesh.rotateX(THREE.Math.degToRad(90));

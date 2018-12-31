@@ -517,6 +517,14 @@ class BoardLib {
   static uuidToComponentWithParent = (table, uuid) => {
     // Returns the component with the UUID on a table
 
+    if(uuid === "root-board") {
+      return {
+        component: table,
+        parent: null,
+        index: 0
+      }
+    }
+
     // Searches all components on the board
     for(let i = 0; i < table.components.length; i++) {
       if(table.components[i].uuid === uuid) {
@@ -529,7 +537,7 @@ class BoardLib {
     }
 
     // Search all the players on the board
-    if(uuid !== null && uuid.startsWith("player-")) {
+    if(uuid != null && uuid.startsWith("player-")) {
       let i = Number(uuid.split("-")[1]) - 1;
       return {
         component: table.players[i],
