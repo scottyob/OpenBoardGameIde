@@ -1,7 +1,9 @@
 // Creates a boardcame for the initial state.
 
-import { Table } from "./BoardGame.js";
+import { OpenBoardGame } from "./BoardGame.js";
 
+// Shortcuts
+const Table = OpenBoardGame.Table;
 
 
 const InitialBoardGame = {
