@@ -3,13 +3,16 @@ import React, { Component } from "react";
 import { withStyles } from '@material-ui/core/styles';
 import Tree, { TreeNode } from 'rc-tree';
 import * as actions from '../actions/index.js';
-import { GameComponent, GameComponentStack } from '../BoardGame.js';
+import { OpenBoardGame } from "../BoardGame.js";
 
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
 import 'rc-tree/assets/index.css';
 
+const GameComponent = OpenBoardGame.GameComponent;
+const GameComponentStack = OpenBoardGame.GameComponentStack;
+const Player = OpenBoardGame.Player;
 
 const styles = theme => {
   return {
@@ -50,10 +53,12 @@ class ComponentExplorer extends Component {
       let component = BoardLib.uuidToComponent(this.props.board, selectedUuid);
       var menuType = 'table'
       if(selectedUuid != 'root-board') {
-        if(component instanceof GameComponent)
+        if(component instanceof OpenBoardGame.GameComponent)
           menuType = 'component'
         else if (component instanceof GameComponentStack)
           menuType = 'stack'
+        else if (component instanceof Player)
+          menuType = 'player'
       }
 
       this.setState({
@@ -154,7 +159,11 @@ class ComponentExplorer extends Component {
           createComponent(menuUuid)
         ]
         break;
-
+      case 'player':
+        menuItems = [
+          deleteMenuItem
+        ]
+        break;
     }
 
     return <div>

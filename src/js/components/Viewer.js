@@ -150,10 +150,20 @@ class Viewer extends Component {
   }
 
   centerCamera(object) {
+    var x = object.xPos;
+    var y = object.yPos;
+
+    if (object.position != null) {
+        x = object.position.x;
+        y = object.position.y;
+    }
     // Update the camera to point to the selected object.
-    this.controls.center = new THREE.Vector3(object.xPos * -1, 0, object.yPos);
-    this.camera.position.x = object.xPos * -1;
-    this.camera.position.z = object.yPos;
+    //var x = object.xPos || object.position?.x || 0;
+    //var y = object.yPos || object.position?.y || 0;
+
+    this.controls.center = new THREE.Vector3(x * -1, 0, y);
+    this.camera.position.x = x * -1;
+    this.camera.position.z = y;
     this.camera.position.y = THREE.Math.clamp(this.camera.position.y, CAMERA_HEIGHT, Infinity);
   }
 
@@ -181,7 +191,7 @@ class Viewer extends Component {
       // Temporary.  Load an image from the interwebs.
       // debugger;
       let cardTopTexture = new THREE.TextureLoader().load(stack.members[stack.members.length-1].backUrl);
-      // var cardTopTexture = new THREE.TextureLoader().load("img/card_side.jpg");
+      //var cardTopTexture = new THREE.TextureLoader().load("img/card_side.jpg");
       let cardTopMaterial = new THREE.MeshBasicMaterial( {
          map: cardTopTexture,
          color: 0xffffff,
@@ -206,13 +216,13 @@ class Viewer extends Component {
         materials
       )
 
-      box.position.x = stack.xPos * -1 || 0;
+      box.position.x = stack.position.x * -1 || 0;
       box.position.y = 0.015;
-      box.position.z = stack.yPos || 0;
-      box.rotateY(THREE.Math.degToRad(stack.rotation));
+      box.position.z = stack.position.y || 0;
+      box.rotateY(THREE.Math.degToRad(stack.position.rotation));
 
       if(stack.uuid === this.props.selectedUuid) {
-        this.drawMeshOutline(boxGeometry, box, stack.rotation);
+        this.drawMeshOutline(boxGeometry, box, stack.position.rotation);
         this.centerCamera(stack);
       }
 
@@ -232,9 +242,9 @@ class Viewer extends Component {
 
        let cardGeometry = new THREE.PlaneGeometry(component.width, component.height);
        let card = new THREE.Mesh( cardGeometry, cardMaterial );
-       card.position.x = component.xPos * -1;
-       card.position.z = component.yPos;
-       card.rotateY(THREE.Math.degToRad(component.rotation));
+       card.position.x = component.position.x * -1;
+       card.position.z = component.position.y;
+       card.rotateY(THREE.Math.degToRad(component.position.rotation));
        card.rotateX(THREE.Math.degToRad(-90));
 
        if(component.uuid === this.props.selectedUuid) {
@@ -291,7 +301,7 @@ class Viewer extends Component {
 
     return (
       <div
-        tabindex="0"
+        tabIndex="0"
         className={classes.root}
         ref={(mount) => { this.mount = mount }}
       />

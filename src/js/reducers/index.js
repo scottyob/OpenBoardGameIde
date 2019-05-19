@@ -1,8 +1,12 @@
 import * as constants from "../constants/action-types";
 import BoardLib from "../board.js";
-import { GameComponent, GameComponentStack, Player } from "../BoardGame.js";
+import { OpenBoardGame } from "../BoardGame.js";
 import { Math } from 'three';
 
+const GameComponent = OpenBoardGame.GameComponent;
+const GameComponentStack = OpenBoardGame.GameComponentStack;
+const Player = OpenBoardGame.Player;
+const Position = OpenBoardGame.Position;
 
 const initialState = {
   table: BoardLib.getBoard(),
@@ -46,7 +50,10 @@ const rootReducer = (state = initialState, action) => {
     }
     case constants.CREATE_STACK: {
       let newTable = BoardLib.cloneTable(state.table);
-      newTable.stacks.push(new GameComponentStack({uuid: Math.generateUUID()}));
+      newTable.stacks.push(new GameComponentStack({
+        uuid: Math.generateUUID(),
+        position: new Position(),
+      }));
       return {
         ...state,
         table: newTable
@@ -66,6 +73,7 @@ const rootReducer = (state = initialState, action) => {
         height: 0.0089, // Standard playing card,
         backUrl: "https://cdn3.iconfinder.com/data/icons/gray-toolbar-4/512/question-512.png",
         frontUrl: "https://cdn3.iconfinder.com/data/icons/gray-toolbar-4/512/question-512.png",
+        position: new Position(),
       }));
       return {
         ...state,

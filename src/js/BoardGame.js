@@ -18,6 +18,288 @@ $root.OpenBoardGame = (function() {
      */
     var OpenBoardGame = {};
 
+    OpenBoardGame.Position = (function() {
+
+        /**
+         * Properties of a Position.
+         * @memberof OpenBoardGame
+         * @interface IPosition
+         * @property {number|null} [x] Position x
+         * @property {number|null} [y] Position y
+         * @property {number|Long|null} [rotation] Position rotation
+         * @property {number|Long|null} [movingPlayer] Position movingPlayer
+         */
+
+        /**
+         * Constructs a new Position.
+         * @memberof OpenBoardGame
+         * @classdesc Represents a Position.
+         * @implements IPosition
+         * @constructor
+         * @param {OpenBoardGame.IPosition=} [properties] Properties to set
+         */
+        function Position(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * Position x.
+         * @member {number} x
+         * @memberof OpenBoardGame.Position
+         * @instance
+         */
+        Position.prototype.x = 0;
+
+        /**
+         * Position y.
+         * @member {number} y
+         * @memberof OpenBoardGame.Position
+         * @instance
+         */
+        Position.prototype.y = 0;
+
+        /**
+         * Position rotation.
+         * @member {number|Long} rotation
+         * @memberof OpenBoardGame.Position
+         * @instance
+         */
+        Position.prototype.rotation = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+        /**
+         * Position movingPlayer.
+         * @member {number|Long} movingPlayer
+         * @memberof OpenBoardGame.Position
+         * @instance
+         */
+        Position.prototype.movingPlayer = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+        /**
+         * Creates a new Position instance using the specified properties.
+         * @function create
+         * @memberof OpenBoardGame.Position
+         * @static
+         * @param {OpenBoardGame.IPosition=} [properties] Properties to set
+         * @returns {OpenBoardGame.Position} Position instance
+         */
+        Position.create = function create(properties) {
+            return new Position(properties);
+        };
+
+        /**
+         * Encodes the specified Position message. Does not implicitly {@link OpenBoardGame.Position.verify|verify} messages.
+         * @function encode
+         * @memberof OpenBoardGame.Position
+         * @static
+         * @param {OpenBoardGame.IPosition} message Position message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        Position.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.x != null && message.hasOwnProperty("x"))
+                writer.uint32(/* id 1, wireType 5 =*/13).float(message.x);
+            if (message.y != null && message.hasOwnProperty("y"))
+                writer.uint32(/* id 2, wireType 5 =*/21).float(message.y);
+            if (message.rotation != null && message.hasOwnProperty("rotation"))
+                writer.uint32(/* id 3, wireType 0 =*/24).int64(message.rotation);
+            if (message.movingPlayer != null && message.hasOwnProperty("movingPlayer"))
+                writer.uint32(/* id 4, wireType 0 =*/32).int64(message.movingPlayer);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified Position message, length delimited. Does not implicitly {@link OpenBoardGame.Position.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof OpenBoardGame.Position
+         * @static
+         * @param {OpenBoardGame.IPosition} message Position message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        Position.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a Position message from the specified reader or buffer.
+         * @function decode
+         * @memberof OpenBoardGame.Position
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {OpenBoardGame.Position} Position
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        Position.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.OpenBoardGame.Position();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.x = reader.float();
+                    break;
+                case 2:
+                    message.y = reader.float();
+                    break;
+                case 3:
+                    message.rotation = reader.int64();
+                    break;
+                case 4:
+                    message.movingPlayer = reader.int64();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a Position message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof OpenBoardGame.Position
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {OpenBoardGame.Position} Position
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        Position.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a Position message.
+         * @function verify
+         * @memberof OpenBoardGame.Position
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        Position.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.x != null && message.hasOwnProperty("x"))
+                if (typeof message.x !== "number")
+                    return "x: number expected";
+            if (message.y != null && message.hasOwnProperty("y"))
+                if (typeof message.y !== "number")
+                    return "y: number expected";
+            if (message.rotation != null && message.hasOwnProperty("rotation"))
+                if (!$util.isInteger(message.rotation) && !(message.rotation && $util.isInteger(message.rotation.low) && $util.isInteger(message.rotation.high)))
+                    return "rotation: integer|Long expected";
+            if (message.movingPlayer != null && message.hasOwnProperty("movingPlayer"))
+                if (!$util.isInteger(message.movingPlayer) && !(message.movingPlayer && $util.isInteger(message.movingPlayer.low) && $util.isInteger(message.movingPlayer.high)))
+                    return "movingPlayer: integer|Long expected";
+            return null;
+        };
+
+        /**
+         * Creates a Position message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof OpenBoardGame.Position
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {OpenBoardGame.Position} Position
+         */
+        Position.fromObject = function fromObject(object) {
+            if (object instanceof $root.OpenBoardGame.Position)
+                return object;
+            var message = new $root.OpenBoardGame.Position();
+            if (object.x != null)
+                message.x = Number(object.x);
+            if (object.y != null)
+                message.y = Number(object.y);
+            if (object.rotation != null)
+                if ($util.Long)
+                    (message.rotation = $util.Long.fromValue(object.rotation)).unsigned = false;
+                else if (typeof object.rotation === "string")
+                    message.rotation = parseInt(object.rotation, 10);
+                else if (typeof object.rotation === "number")
+                    message.rotation = object.rotation;
+                else if (typeof object.rotation === "object")
+                    message.rotation = new $util.LongBits(object.rotation.low >>> 0, object.rotation.high >>> 0).toNumber();
+            if (object.movingPlayer != null)
+                if ($util.Long)
+                    (message.movingPlayer = $util.Long.fromValue(object.movingPlayer)).unsigned = false;
+                else if (typeof object.movingPlayer === "string")
+                    message.movingPlayer = parseInt(object.movingPlayer, 10);
+                else if (typeof object.movingPlayer === "number")
+                    message.movingPlayer = object.movingPlayer;
+                else if (typeof object.movingPlayer === "object")
+                    message.movingPlayer = new $util.LongBits(object.movingPlayer.low >>> 0, object.movingPlayer.high >>> 0).toNumber();
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a Position message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof OpenBoardGame.Position
+         * @static
+         * @param {OpenBoardGame.Position} message Position
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        Position.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults) {
+                object.x = 0;
+                object.y = 0;
+                if ($util.Long) {
+                    var long = new $util.Long(0, 0, false);
+                    object.rotation = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                } else
+                    object.rotation = options.longs === String ? "0" : 0;
+                if ($util.Long) {
+                    var long = new $util.Long(0, 0, false);
+                    object.movingPlayer = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                } else
+                    object.movingPlayer = options.longs === String ? "0" : 0;
+            }
+            if (message.x != null && message.hasOwnProperty("x"))
+                object.x = options.json && !isFinite(message.x) ? String(message.x) : message.x;
+            if (message.y != null && message.hasOwnProperty("y"))
+                object.y = options.json && !isFinite(message.y) ? String(message.y) : message.y;
+            if (message.rotation != null && message.hasOwnProperty("rotation"))
+                if (typeof message.rotation === "number")
+                    object.rotation = options.longs === String ? String(message.rotation) : message.rotation;
+                else
+                    object.rotation = options.longs === String ? $util.Long.prototype.toString.call(message.rotation) : options.longs === Number ? new $util.LongBits(message.rotation.low >>> 0, message.rotation.high >>> 0).toNumber() : message.rotation;
+            if (message.movingPlayer != null && message.hasOwnProperty("movingPlayer"))
+                if (typeof message.movingPlayer === "number")
+                    object.movingPlayer = options.longs === String ? String(message.movingPlayer) : message.movingPlayer;
+                else
+                    object.movingPlayer = options.longs === String ? $util.Long.prototype.toString.call(message.movingPlayer) : options.longs === Number ? new $util.LongBits(message.movingPlayer.low >>> 0, message.movingPlayer.high >>> 0).toNumber() : message.movingPlayer;
+            return object;
+        };
+
+        /**
+         * Converts this Position to JSON.
+         * @function toJSON
+         * @memberof OpenBoardGame.Position
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        Position.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return Position;
+    })();
+
     OpenBoardGame.GameComponent = (function() {
 
         /**
@@ -26,9 +308,7 @@ $root.OpenBoardGame = (function() {
          * @interface IGameComponent
          * @property {string|null} [uuid] GameComponent uuid
          * @property {OpenBoardGame.GameComponent.ComponentType|null} [componentType] GameComponent componentType
-         * @property {number|null} [xPos] GameComponent xPos
-         * @property {number|null} [yPos] GameComponent yPos
-         * @property {number|Long|null} [rotation] GameComponent rotation
+         * @property {OpenBoardGame.IPosition|null} [position] GameComponent position
          * @property {number|null} [width] GameComponent width
          * @property {number|null} [height] GameComponent height
          * @property {string|null} [frontUrl] GameComponent frontUrl
@@ -36,7 +316,6 @@ $root.OpenBoardGame = (function() {
          * @property {string|null} [displayName] GameComponent displayName
          * @property {string|null} [stackableIdentifier] GameComponent stackableIdentifier
          * @property {Object.<string,string>|null} [additionalProperties] GameComponent additionalProperties
-         * @property {number|Long|null} [movingPlayer] GameComponent movingPlayer
          * @property {boolean|null} [faceUp] GameComponent faceUp
          */
 
@@ -73,28 +352,12 @@ $root.OpenBoardGame = (function() {
         GameComponent.prototype.componentType = 0;
 
         /**
-         * GameComponent xPos.
-         * @member {number} xPos
+         * GameComponent position.
+         * @member {OpenBoardGame.IPosition|null|undefined} position
          * @memberof OpenBoardGame.GameComponent
          * @instance
          */
-        GameComponent.prototype.xPos = 0;
-
-        /**
-         * GameComponent yPos.
-         * @member {number} yPos
-         * @memberof OpenBoardGame.GameComponent
-         * @instance
-         */
-        GameComponent.prototype.yPos = 0;
-
-        /**
-         * GameComponent rotation.
-         * @member {number|Long} rotation
-         * @memberof OpenBoardGame.GameComponent
-         * @instance
-         */
-        GameComponent.prototype.rotation = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+        GameComponent.prototype.position = null;
 
         /**
          * GameComponent width.
@@ -153,14 +416,6 @@ $root.OpenBoardGame = (function() {
         GameComponent.prototype.additionalProperties = $util.emptyObject;
 
         /**
-         * GameComponent movingPlayer.
-         * @member {number|Long} movingPlayer
-         * @memberof OpenBoardGame.GameComponent
-         * @instance
-         */
-        GameComponent.prototype.movingPlayer = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
-
-        /**
          * GameComponent faceUp.
          * @member {boolean} faceUp
          * @memberof OpenBoardGame.GameComponent
@@ -196,31 +451,25 @@ $root.OpenBoardGame = (function() {
                 writer.uint32(/* id 1, wireType 2 =*/10).string(message.uuid);
             if (message.componentType != null && message.hasOwnProperty("componentType"))
                 writer.uint32(/* id 2, wireType 0 =*/16).int32(message.componentType);
-            if (message.xPos != null && message.hasOwnProperty("xPos"))
-                writer.uint32(/* id 3, wireType 5 =*/29).float(message.xPos);
-            if (message.yPos != null && message.hasOwnProperty("yPos"))
-                writer.uint32(/* id 4, wireType 5 =*/37).float(message.yPos);
-            if (message.rotation != null && message.hasOwnProperty("rotation"))
-                writer.uint32(/* id 5, wireType 0 =*/40).int64(message.rotation);
+            if (message.position != null && message.hasOwnProperty("position"))
+                $root.OpenBoardGame.Position.encode(message.position, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
             if (message.width != null && message.hasOwnProperty("width"))
-                writer.uint32(/* id 6, wireType 5 =*/53).float(message.width);
+                writer.uint32(/* id 4, wireType 5 =*/37).float(message.width);
             if (message.height != null && message.hasOwnProperty("height"))
-                writer.uint32(/* id 7, wireType 5 =*/61).float(message.height);
+                writer.uint32(/* id 5, wireType 5 =*/45).float(message.height);
             if (message.frontUrl != null && message.hasOwnProperty("frontUrl"))
-                writer.uint32(/* id 8, wireType 2 =*/66).string(message.frontUrl);
+                writer.uint32(/* id 6, wireType 2 =*/50).string(message.frontUrl);
             if (message.backUrl != null && message.hasOwnProperty("backUrl"))
-                writer.uint32(/* id 9, wireType 2 =*/74).string(message.backUrl);
+                writer.uint32(/* id 7, wireType 2 =*/58).string(message.backUrl);
             if (message.displayName != null && message.hasOwnProperty("displayName"))
-                writer.uint32(/* id 10, wireType 2 =*/82).string(message.displayName);
+                writer.uint32(/* id 8, wireType 2 =*/66).string(message.displayName);
             if (message.stackableIdentifier != null && message.hasOwnProperty("stackableIdentifier"))
-                writer.uint32(/* id 11, wireType 2 =*/90).string(message.stackableIdentifier);
+                writer.uint32(/* id 9, wireType 2 =*/74).string(message.stackableIdentifier);
             if (message.additionalProperties != null && message.hasOwnProperty("additionalProperties"))
                 for (var keys = Object.keys(message.additionalProperties), i = 0; i < keys.length; ++i)
-                    writer.uint32(/* id 12, wireType 2 =*/98).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]).uint32(/* id 2, wireType 2 =*/18).string(message.additionalProperties[keys[i]]).ldelim();
-            if (message.movingPlayer != null && message.hasOwnProperty("movingPlayer"))
-                writer.uint32(/* id 13, wireType 0 =*/104).int64(message.movingPlayer);
+                    writer.uint32(/* id 10, wireType 2 =*/82).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]).uint32(/* id 2, wireType 2 =*/18).string(message.additionalProperties[keys[i]]).ldelim();
             if (message.faceUp != null && message.hasOwnProperty("faceUp"))
-                writer.uint32(/* id 14, wireType 0 =*/112).bool(message.faceUp);
+                writer.uint32(/* id 12, wireType 0 =*/96).bool(message.faceUp);
             return writer;
         };
 
@@ -262,33 +511,27 @@ $root.OpenBoardGame = (function() {
                     message.componentType = reader.int32();
                     break;
                 case 3:
-                    message.xPos = reader.float();
+                    message.position = $root.OpenBoardGame.Position.decode(reader, reader.uint32());
                     break;
                 case 4:
-                    message.yPos = reader.float();
-                    break;
-                case 5:
-                    message.rotation = reader.int64();
-                    break;
-                case 6:
                     message.width = reader.float();
                     break;
-                case 7:
+                case 5:
                     message.height = reader.float();
                     break;
-                case 8:
+                case 6:
                     message.frontUrl = reader.string();
                     break;
-                case 9:
+                case 7:
                     message.backUrl = reader.string();
                     break;
-                case 10:
+                case 8:
                     message.displayName = reader.string();
                     break;
-                case 11:
+                case 9:
                     message.stackableIdentifier = reader.string();
                     break;
-                case 12:
+                case 10:
                     reader.skip().pos++;
                     if (message.additionalProperties === $util.emptyObject)
                         message.additionalProperties = {};
@@ -296,10 +539,7 @@ $root.OpenBoardGame = (function() {
                     reader.pos++;
                     message.additionalProperties[key] = reader.string();
                     break;
-                case 13:
-                    message.movingPlayer = reader.int64();
-                    break;
-                case 14:
+                case 12:
                     message.faceUp = reader.bool();
                     break;
                 default:
@@ -348,15 +588,11 @@ $root.OpenBoardGame = (function() {
                 case 1:
                     break;
                 }
-            if (message.xPos != null && message.hasOwnProperty("xPos"))
-                if (typeof message.xPos !== "number")
-                    return "xPos: number expected";
-            if (message.yPos != null && message.hasOwnProperty("yPos"))
-                if (typeof message.yPos !== "number")
-                    return "yPos: number expected";
-            if (message.rotation != null && message.hasOwnProperty("rotation"))
-                if (!$util.isInteger(message.rotation) && !(message.rotation && $util.isInteger(message.rotation.low) && $util.isInteger(message.rotation.high)))
-                    return "rotation: integer|Long expected";
+            if (message.position != null && message.hasOwnProperty("position")) {
+                var error = $root.OpenBoardGame.Position.verify(message.position);
+                if (error)
+                    return "position." + error;
+            }
             if (message.width != null && message.hasOwnProperty("width"))
                 if (typeof message.width !== "number")
                     return "width: number expected";
@@ -383,9 +619,6 @@ $root.OpenBoardGame = (function() {
                     if (!$util.isString(message.additionalProperties[key[i]]))
                         return "additionalProperties: string{k:string} expected";
             }
-            if (message.movingPlayer != null && message.hasOwnProperty("movingPlayer"))
-                if (!$util.isInteger(message.movingPlayer) && !(message.movingPlayer && $util.isInteger(message.movingPlayer.low) && $util.isInteger(message.movingPlayer.high)))
-                    return "movingPlayer: integer|Long expected";
             if (message.faceUp != null && message.hasOwnProperty("faceUp"))
                 if (typeof message.faceUp !== "boolean")
                     return "faceUp: boolean expected";
@@ -416,19 +649,11 @@ $root.OpenBoardGame = (function() {
                 message.componentType = 1;
                 break;
             }
-            if (object.xPos != null)
-                message.xPos = Number(object.xPos);
-            if (object.yPos != null)
-                message.yPos = Number(object.yPos);
-            if (object.rotation != null)
-                if ($util.Long)
-                    (message.rotation = $util.Long.fromValue(object.rotation)).unsigned = false;
-                else if (typeof object.rotation === "string")
-                    message.rotation = parseInt(object.rotation, 10);
-                else if (typeof object.rotation === "number")
-                    message.rotation = object.rotation;
-                else if (typeof object.rotation === "object")
-                    message.rotation = new $util.LongBits(object.rotation.low >>> 0, object.rotation.high >>> 0).toNumber();
+            if (object.position != null) {
+                if (typeof object.position !== "object")
+                    throw TypeError(".OpenBoardGame.GameComponent.position: object expected");
+                message.position = $root.OpenBoardGame.Position.fromObject(object.position);
+            }
             if (object.width != null)
                 message.width = Number(object.width);
             if (object.height != null)
@@ -448,15 +673,6 @@ $root.OpenBoardGame = (function() {
                 for (var keys = Object.keys(object.additionalProperties), i = 0; i < keys.length; ++i)
                     message.additionalProperties[keys[i]] = String(object.additionalProperties[keys[i]]);
             }
-            if (object.movingPlayer != null)
-                if ($util.Long)
-                    (message.movingPlayer = $util.Long.fromValue(object.movingPlayer)).unsigned = false;
-                else if (typeof object.movingPlayer === "string")
-                    message.movingPlayer = parseInt(object.movingPlayer, 10);
-                else if (typeof object.movingPlayer === "number")
-                    message.movingPlayer = object.movingPlayer;
-                else if (typeof object.movingPlayer === "object")
-                    message.movingPlayer = new $util.LongBits(object.movingPlayer.low >>> 0, object.movingPlayer.high >>> 0).toNumber();
             if (object.faceUp != null)
                 message.faceUp = Boolean(object.faceUp);
             return message;
@@ -480,39 +696,21 @@ $root.OpenBoardGame = (function() {
             if (options.defaults) {
                 object.uuid = "";
                 object.componentType = options.enums === String ? "DISPLAY_2D" : 0;
-                object.xPos = 0;
-                object.yPos = 0;
-                if ($util.Long) {
-                    var long = new $util.Long(0, 0, false);
-                    object.rotation = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                } else
-                    object.rotation = options.longs === String ? "0" : 0;
+                object.position = null;
                 object.width = 0;
                 object.height = 0;
                 object.frontUrl = "";
                 object.backUrl = "";
                 object.displayName = "";
                 object.stackableIdentifier = "";
-                if ($util.Long) {
-                    var long = new $util.Long(0, 0, false);
-                    object.movingPlayer = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                } else
-                    object.movingPlayer = options.longs === String ? "0" : 0;
                 object.faceUp = false;
             }
             if (message.uuid != null && message.hasOwnProperty("uuid"))
                 object.uuid = message.uuid;
             if (message.componentType != null && message.hasOwnProperty("componentType"))
                 object.componentType = options.enums === String ? $root.OpenBoardGame.GameComponent.ComponentType[message.componentType] : message.componentType;
-            if (message.xPos != null && message.hasOwnProperty("xPos"))
-                object.xPos = options.json && !isFinite(message.xPos) ? String(message.xPos) : message.xPos;
-            if (message.yPos != null && message.hasOwnProperty("yPos"))
-                object.yPos = options.json && !isFinite(message.yPos) ? String(message.yPos) : message.yPos;
-            if (message.rotation != null && message.hasOwnProperty("rotation"))
-                if (typeof message.rotation === "number")
-                    object.rotation = options.longs === String ? String(message.rotation) : message.rotation;
-                else
-                    object.rotation = options.longs === String ? $util.Long.prototype.toString.call(message.rotation) : options.longs === Number ? new $util.LongBits(message.rotation.low >>> 0, message.rotation.high >>> 0).toNumber() : message.rotation;
+            if (message.position != null && message.hasOwnProperty("position"))
+                object.position = $root.OpenBoardGame.Position.toObject(message.position, options);
             if (message.width != null && message.hasOwnProperty("width"))
                 object.width = options.json && !isFinite(message.width) ? String(message.width) : message.width;
             if (message.height != null && message.hasOwnProperty("height"))
@@ -531,11 +729,6 @@ $root.OpenBoardGame = (function() {
                 for (var j = 0; j < keys2.length; ++j)
                     object.additionalProperties[keys2[j]] = message.additionalProperties[keys2[j]];
             }
-            if (message.movingPlayer != null && message.hasOwnProperty("movingPlayer"))
-                if (typeof message.movingPlayer === "number")
-                    object.movingPlayer = options.longs === String ? String(message.movingPlayer) : message.movingPlayer;
-                else
-                    object.movingPlayer = options.longs === String ? $util.Long.prototype.toString.call(message.movingPlayer) : options.longs === Number ? new $util.LongBits(message.movingPlayer.low >>> 0, message.movingPlayer.high >>> 0).toNumber() : message.movingPlayer;
             if (message.faceUp != null && message.hasOwnProperty("faceUp"))
                 object.faceUp = message.faceUp;
             return object;
@@ -577,11 +770,7 @@ $root.OpenBoardGame = (function() {
          * @interface IGameComponentStack
          * @property {string|null} [uuid] GameComponentStack uuid
          * @property {Array.<OpenBoardGame.IGameComponent>|null} [members] GameComponentStack members
-         * @property {number|null} [xPos] GameComponentStack xPos
-         * @property {number|null} [yPos] GameComponentStack yPos
-         * @property {number|Long|null} [rotation] GameComponentStack rotation
-         * @property {string|null} [testing] GameComponentStack testing
-         * @property {number|Long|null} [movingPlayer] GameComponentStack movingPlayer
+         * @property {OpenBoardGame.IPosition|null} [position] GameComponentStack position
          */
 
         /**
@@ -617,44 +806,12 @@ $root.OpenBoardGame = (function() {
         GameComponentStack.prototype.members = $util.emptyArray;
 
         /**
-         * GameComponentStack xPos.
-         * @member {number} xPos
+         * GameComponentStack position.
+         * @member {OpenBoardGame.IPosition|null|undefined} position
          * @memberof OpenBoardGame.GameComponentStack
          * @instance
          */
-        GameComponentStack.prototype.xPos = 0;
-
-        /**
-         * GameComponentStack yPos.
-         * @member {number} yPos
-         * @memberof OpenBoardGame.GameComponentStack
-         * @instance
-         */
-        GameComponentStack.prototype.yPos = 0;
-
-        /**
-         * GameComponentStack rotation.
-         * @member {number|Long} rotation
-         * @memberof OpenBoardGame.GameComponentStack
-         * @instance
-         */
-        GameComponentStack.prototype.rotation = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
-
-        /**
-         * GameComponentStack testing.
-         * @member {string} testing
-         * @memberof OpenBoardGame.GameComponentStack
-         * @instance
-         */
-        GameComponentStack.prototype.testing = "";
-
-        /**
-         * GameComponentStack movingPlayer.
-         * @member {number|Long} movingPlayer
-         * @memberof OpenBoardGame.GameComponentStack
-         * @instance
-         */
-        GameComponentStack.prototype.movingPlayer = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+        GameComponentStack.prototype.position = null;
 
         /**
          * Creates a new GameComponentStack instance using the specified properties.
@@ -685,16 +842,8 @@ $root.OpenBoardGame = (function() {
             if (message.members != null && message.members.length)
                 for (var i = 0; i < message.members.length; ++i)
                     $root.OpenBoardGame.GameComponent.encode(message.members[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
-            if (message.xPos != null && message.hasOwnProperty("xPos"))
-                writer.uint32(/* id 3, wireType 5 =*/29).float(message.xPos);
-            if (message.yPos != null && message.hasOwnProperty("yPos"))
-                writer.uint32(/* id 4, wireType 5 =*/37).float(message.yPos);
-            if (message.rotation != null && message.hasOwnProperty("rotation"))
-                writer.uint32(/* id 5, wireType 0 =*/40).int64(message.rotation);
-            if (message.testing != null && message.hasOwnProperty("testing"))
-                writer.uint32(/* id 6, wireType 2 =*/50).string(message.testing);
-            if (message.movingPlayer != null && message.hasOwnProperty("movingPlayer"))
-                writer.uint32(/* id 7, wireType 0 =*/56).int64(message.movingPlayer);
+            if (message.position != null && message.hasOwnProperty("position"))
+                $root.OpenBoardGame.Position.encode(message.position, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
             return writer;
         };
 
@@ -738,19 +887,7 @@ $root.OpenBoardGame = (function() {
                     message.members.push($root.OpenBoardGame.GameComponent.decode(reader, reader.uint32()));
                     break;
                 case 3:
-                    message.xPos = reader.float();
-                    break;
-                case 4:
-                    message.yPos = reader.float();
-                    break;
-                case 5:
-                    message.rotation = reader.int64();
-                    break;
-                case 6:
-                    message.testing = reader.string();
-                    break;
-                case 7:
-                    message.movingPlayer = reader.int64();
+                    message.position = $root.OpenBoardGame.Position.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -799,21 +936,11 @@ $root.OpenBoardGame = (function() {
                         return "members." + error;
                 }
             }
-            if (message.xPos != null && message.hasOwnProperty("xPos"))
-                if (typeof message.xPos !== "number")
-                    return "xPos: number expected";
-            if (message.yPos != null && message.hasOwnProperty("yPos"))
-                if (typeof message.yPos !== "number")
-                    return "yPos: number expected";
-            if (message.rotation != null && message.hasOwnProperty("rotation"))
-                if (!$util.isInteger(message.rotation) && !(message.rotation && $util.isInteger(message.rotation.low) && $util.isInteger(message.rotation.high)))
-                    return "rotation: integer|Long expected";
-            if (message.testing != null && message.hasOwnProperty("testing"))
-                if (!$util.isString(message.testing))
-                    return "testing: string expected";
-            if (message.movingPlayer != null && message.hasOwnProperty("movingPlayer"))
-                if (!$util.isInteger(message.movingPlayer) && !(message.movingPlayer && $util.isInteger(message.movingPlayer.low) && $util.isInteger(message.movingPlayer.high)))
-                    return "movingPlayer: integer|Long expected";
+            if (message.position != null && message.hasOwnProperty("position")) {
+                var error = $root.OpenBoardGame.Position.verify(message.position);
+                if (error)
+                    return "position." + error;
+            }
             return null;
         };
 
@@ -841,30 +968,11 @@ $root.OpenBoardGame = (function() {
                     message.members[i] = $root.OpenBoardGame.GameComponent.fromObject(object.members[i]);
                 }
             }
-            if (object.xPos != null)
-                message.xPos = Number(object.xPos);
-            if (object.yPos != null)
-                message.yPos = Number(object.yPos);
-            if (object.rotation != null)
-                if ($util.Long)
-                    (message.rotation = $util.Long.fromValue(object.rotation)).unsigned = false;
-                else if (typeof object.rotation === "string")
-                    message.rotation = parseInt(object.rotation, 10);
-                else if (typeof object.rotation === "number")
-                    message.rotation = object.rotation;
-                else if (typeof object.rotation === "object")
-                    message.rotation = new $util.LongBits(object.rotation.low >>> 0, object.rotation.high >>> 0).toNumber();
-            if (object.testing != null)
-                message.testing = String(object.testing);
-            if (object.movingPlayer != null)
-                if ($util.Long)
-                    (message.movingPlayer = $util.Long.fromValue(object.movingPlayer)).unsigned = false;
-                else if (typeof object.movingPlayer === "string")
-                    message.movingPlayer = parseInt(object.movingPlayer, 10);
-                else if (typeof object.movingPlayer === "number")
-                    message.movingPlayer = object.movingPlayer;
-                else if (typeof object.movingPlayer === "object")
-                    message.movingPlayer = new $util.LongBits(object.movingPlayer.low >>> 0, object.movingPlayer.high >>> 0).toNumber();
+            if (object.position != null) {
+                if (typeof object.position !== "object")
+                    throw TypeError(".OpenBoardGame.GameComponentStack.position: object expected");
+                message.position = $root.OpenBoardGame.Position.fromObject(object.position);
+            }
             return message;
         };
 
@@ -885,19 +993,7 @@ $root.OpenBoardGame = (function() {
                 object.members = [];
             if (options.defaults) {
                 object.uuid = "";
-                object.xPos = 0;
-                object.yPos = 0;
-                if ($util.Long) {
-                    var long = new $util.Long(0, 0, false);
-                    object.rotation = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                } else
-                    object.rotation = options.longs === String ? "0" : 0;
-                object.testing = "";
-                if ($util.Long) {
-                    var long = new $util.Long(0, 0, false);
-                    object.movingPlayer = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                } else
-                    object.movingPlayer = options.longs === String ? "0" : 0;
+                object.position = null;
             }
             if (message.uuid != null && message.hasOwnProperty("uuid"))
                 object.uuid = message.uuid;
@@ -906,22 +1002,8 @@ $root.OpenBoardGame = (function() {
                 for (var j = 0; j < message.members.length; ++j)
                     object.members[j] = $root.OpenBoardGame.GameComponent.toObject(message.members[j], options);
             }
-            if (message.xPos != null && message.hasOwnProperty("xPos"))
-                object.xPos = options.json && !isFinite(message.xPos) ? String(message.xPos) : message.xPos;
-            if (message.yPos != null && message.hasOwnProperty("yPos"))
-                object.yPos = options.json && !isFinite(message.yPos) ? String(message.yPos) : message.yPos;
-            if (message.rotation != null && message.hasOwnProperty("rotation"))
-                if (typeof message.rotation === "number")
-                    object.rotation = options.longs === String ? String(message.rotation) : message.rotation;
-                else
-                    object.rotation = options.longs === String ? $util.Long.prototype.toString.call(message.rotation) : options.longs === Number ? new $util.LongBits(message.rotation.low >>> 0, message.rotation.high >>> 0).toNumber() : message.rotation;
-            if (message.testing != null && message.hasOwnProperty("testing"))
-                object.testing = message.testing;
-            if (message.movingPlayer != null && message.hasOwnProperty("movingPlayer"))
-                if (typeof message.movingPlayer === "number")
-                    object.movingPlayer = options.longs === String ? String(message.movingPlayer) : message.movingPlayer;
-                else
-                    object.movingPlayer = options.longs === String ? $util.Long.prototype.toString.call(message.movingPlayer) : options.longs === Number ? new $util.LongBits(message.movingPlayer.low >>> 0, message.movingPlayer.high >>> 0).toNumber() : message.movingPlayer;
+            if (message.position != null && message.hasOwnProperty("position"))
+                object.position = $root.OpenBoardGame.Position.toObject(message.position, options);
             return object;
         };
 
@@ -1023,13 +1105,13 @@ $root.OpenBoardGame = (function() {
             if (!writer)
                 writer = $Writer.create();
             if (message.xPos != null && message.hasOwnProperty("xPos"))
-                writer.uint32(/* id 2, wireType 5 =*/21).float(message.xPos);
+                writer.uint32(/* id 1, wireType 5 =*/13).float(message.xPos);
             if (message.yPos != null && message.hasOwnProperty("yPos"))
-                writer.uint32(/* id 3, wireType 5 =*/29).float(message.yPos);
+                writer.uint32(/* id 2, wireType 5 =*/21).float(message.yPos);
             if (message.rotation != null && message.hasOwnProperty("rotation"))
-                writer.uint32(/* id 4, wireType 0 =*/32).int64(message.rotation);
+                writer.uint32(/* id 3, wireType 0 =*/24).int64(message.rotation);
             if (message.name != null && message.hasOwnProperty("name"))
-                writer.uint32(/* id 5, wireType 2 =*/42).string(message.name);
+                writer.uint32(/* id 4, wireType 2 =*/34).string(message.name);
             return writer;
         };
 
@@ -1064,16 +1146,16 @@ $root.OpenBoardGame = (function() {
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
-                case 2:
+                case 1:
                     message.xPos = reader.float();
                     break;
-                case 3:
+                case 2:
                     message.yPos = reader.float();
                     break;
-                case 4:
+                case 3:
                     message.rotation = reader.int64();
                     break;
-                case 5:
+                case 4:
                     message.name = reader.string();
                     break;
                 default:
@@ -1590,6 +1672,221 @@ $root.OpenBoardGame = (function() {
         };
 
         return Table;
+    })();
+
+    OpenBoardGame.ComponentMoveReq = (function() {
+
+        /**
+         * Properties of a ComponentMoveReq.
+         * @memberof OpenBoardGame
+         * @interface IComponentMoveReq
+         * @property {string|null} [uuid] ComponentMoveReq uuid
+         * @property {OpenBoardGame.IPosition|null} [position] ComponentMoveReq position
+         */
+
+        /**
+         * Constructs a new ComponentMoveReq.
+         * @memberof OpenBoardGame
+         * @classdesc Represents a ComponentMoveReq.
+         * @implements IComponentMoveReq
+         * @constructor
+         * @param {OpenBoardGame.IComponentMoveReq=} [properties] Properties to set
+         */
+        function ComponentMoveReq(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * ComponentMoveReq uuid.
+         * @member {string} uuid
+         * @memberof OpenBoardGame.ComponentMoveReq
+         * @instance
+         */
+        ComponentMoveReq.prototype.uuid = "";
+
+        /**
+         * ComponentMoveReq position.
+         * @member {OpenBoardGame.IPosition|null|undefined} position
+         * @memberof OpenBoardGame.ComponentMoveReq
+         * @instance
+         */
+        ComponentMoveReq.prototype.position = null;
+
+        /**
+         * Creates a new ComponentMoveReq instance using the specified properties.
+         * @function create
+         * @memberof OpenBoardGame.ComponentMoveReq
+         * @static
+         * @param {OpenBoardGame.IComponentMoveReq=} [properties] Properties to set
+         * @returns {OpenBoardGame.ComponentMoveReq} ComponentMoveReq instance
+         */
+        ComponentMoveReq.create = function create(properties) {
+            return new ComponentMoveReq(properties);
+        };
+
+        /**
+         * Encodes the specified ComponentMoveReq message. Does not implicitly {@link OpenBoardGame.ComponentMoveReq.verify|verify} messages.
+         * @function encode
+         * @memberof OpenBoardGame.ComponentMoveReq
+         * @static
+         * @param {OpenBoardGame.IComponentMoveReq} message ComponentMoveReq message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ComponentMoveReq.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.uuid != null && message.hasOwnProperty("uuid"))
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.uuid);
+            if (message.position != null && message.hasOwnProperty("position"))
+                $root.OpenBoardGame.Position.encode(message.position, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified ComponentMoveReq message, length delimited. Does not implicitly {@link OpenBoardGame.ComponentMoveReq.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof OpenBoardGame.ComponentMoveReq
+         * @static
+         * @param {OpenBoardGame.IComponentMoveReq} message ComponentMoveReq message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ComponentMoveReq.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a ComponentMoveReq message from the specified reader or buffer.
+         * @function decode
+         * @memberof OpenBoardGame.ComponentMoveReq
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {OpenBoardGame.ComponentMoveReq} ComponentMoveReq
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        ComponentMoveReq.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.OpenBoardGame.ComponentMoveReq();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.uuid = reader.string();
+                    break;
+                case 2:
+                    message.position = $root.OpenBoardGame.Position.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a ComponentMoveReq message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof OpenBoardGame.ComponentMoveReq
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {OpenBoardGame.ComponentMoveReq} ComponentMoveReq
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        ComponentMoveReq.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a ComponentMoveReq message.
+         * @function verify
+         * @memberof OpenBoardGame.ComponentMoveReq
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        ComponentMoveReq.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.uuid != null && message.hasOwnProperty("uuid"))
+                if (!$util.isString(message.uuid))
+                    return "uuid: string expected";
+            if (message.position != null && message.hasOwnProperty("position")) {
+                var error = $root.OpenBoardGame.Position.verify(message.position);
+                if (error)
+                    return "position." + error;
+            }
+            return null;
+        };
+
+        /**
+         * Creates a ComponentMoveReq message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof OpenBoardGame.ComponentMoveReq
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {OpenBoardGame.ComponentMoveReq} ComponentMoveReq
+         */
+        ComponentMoveReq.fromObject = function fromObject(object) {
+            if (object instanceof $root.OpenBoardGame.ComponentMoveReq)
+                return object;
+            var message = new $root.OpenBoardGame.ComponentMoveReq();
+            if (object.uuid != null)
+                message.uuid = String(object.uuid);
+            if (object.position != null) {
+                if (typeof object.position !== "object")
+                    throw TypeError(".OpenBoardGame.ComponentMoveReq.position: object expected");
+                message.position = $root.OpenBoardGame.Position.fromObject(object.position);
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a ComponentMoveReq message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof OpenBoardGame.ComponentMoveReq
+         * @static
+         * @param {OpenBoardGame.ComponentMoveReq} message ComponentMoveReq
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        ComponentMoveReq.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            var object = {};
+            if (options.defaults) {
+                object.uuid = "";
+                object.position = null;
+            }
+            if (message.uuid != null && message.hasOwnProperty("uuid"))
+                object.uuid = message.uuid;
+            if (message.position != null && message.hasOwnProperty("position"))
+                object.position = $root.OpenBoardGame.Position.toObject(message.position, options);
+            return object;
+        };
+
+        /**
+         * Converts this ComponentMoveReq to JSON.
+         * @function toJSON
+         * @memberof OpenBoardGame.ComponentMoveReq
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        ComponentMoveReq.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return ComponentMoveReq;
     })();
 
     return OpenBoardGame;
